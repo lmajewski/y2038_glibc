@@ -26,7 +26,8 @@ headers		= langinfo.h locale.h bits/locale.h \
 		  bits/types/locale_t.h bits/types/__locale_t.h
 routines	= setlocale findlocale loadlocale loadarchive \
 		  localeconv nl_langinfo nl_langinfo_l mb_cur_max \
-		  newlocale duplocale freelocale uselocale
+		  newlocale duplocale freelocale uselocale \
+		  catnames
 tests		= tst-C-locale tst-locname tst-duplocale
 categories	= ctype messages monetary numeric time paper name \
 		  address telephone measurement identification collate

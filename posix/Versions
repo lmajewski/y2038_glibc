@@ -141,6 +141,7 @@ libc {
     posix_spawn_file_actions_addchdir_np;
     posix_spawn_file_actions_addfchdir_np;
     __sched_rr_get_interval_time64;
+    __nanosleep64;
   }
   GLIBC_PRIVATE {
     __libc_fork; __libc_pread; __libc_pwrite;

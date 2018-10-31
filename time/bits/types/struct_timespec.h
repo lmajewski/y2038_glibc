@@ -15,6 +15,7 @@ struct timespec
   __syscall_slong_t tv_nsec;	/* Nanoseconds.  */
 };
 #else
+# include <bits/types/struct_timespec64.h>
 /* Use the 64-bit-time timespec by default */
 #define timespec __timespec64
 # endif

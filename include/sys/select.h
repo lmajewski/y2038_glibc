@@ -2,6 +2,7 @@
 #include <misc/sys/select.h>
 
 #ifndef _ISOMAC
+# include <bits/types/struct_timespec64.h>
 /* Now define the internal interfaces.  */
 
 extern int __pselect (int __nfds, fd_set *__readfds,

@@ -1,5 +1,6 @@
 #ifndef _SYS_STAT_H
 #include <io/sys/stat.h>
+#include <bits/types/struct_timespec64.h>
 
 #ifndef _ISOMAC
 

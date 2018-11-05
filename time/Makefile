@@ -30,6 +30,7 @@ headers := time.h sys/time.h sys/timeb.h bits/time.h			\
 	   bits/types/time_t.h						\
 	   ../include/bits/types/struct_timespec64.h			\
 	   bits/types/struct_timeval64.h				\
+	   ../include/bits/types/struct_itimerspec64.h			\
 
 routines := offtime asctime clock ctime ctime_r difftime \
 	    gmtime localtime mktime time		 \

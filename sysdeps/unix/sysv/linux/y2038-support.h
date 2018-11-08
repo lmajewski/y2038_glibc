@@ -17,8 +17,6 @@
    License along with the GNU C Library; if not, see
    <http://www.gnu.org/licenses/>.  */
 
-#ifndef __ASSUME_KERNEL_Y2038_SUPPORT
-
 #include <stdbool.h>
 
 /* Indicates Y2038 support.
@@ -28,7 +26,13 @@
  * call __y2038_get_kernel_support() and __y2038_set_kernel_support().  */
 extern bool __y2038_linux_support;
 
-#endif
+static inline bool __y2038_get_kernel_support (void) {
+	return true;
+}
+
+static inline
+void __y2038_set_kernel_support (bool support __attribute__ ((unused))) {
+}
 
 /* As a fallback, provide generic Y2038 support indication.  */
 #include <misc/y2038-support.h>

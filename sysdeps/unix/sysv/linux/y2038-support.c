@@ -17,9 +17,9 @@
    License along with the GNU C Library; if not, see
    <http://www.gnu.org/licenses/>.  */
 
-#ifndef __ASSUME_KERNEL_Y2038_SUPPORT
-
 #include <stdbool.h>
+
+#ifndef __ASSUME_KERNEL_Y2038_SUPPORT
 
 /* By default the underlying Linux kernel is assumed not to support Y2038.
  * Any Linux architecture may (test and) claim Y2038 kernel support by
@@ -42,5 +42,8 @@ __linux_y2038_set_kernel_support (bool support)
   __y2038_linux_support = support;
 }
 strong_alias (__linux_y2038_set_kernel_support, __y2038_set_kernel_support)
+
+#else
+bool __y2038_linux_support = true;
 
 #endif

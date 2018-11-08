@@ -159,4 +159,4 @@
    kernel.
    */
 
-/* #define __ASSUME_KERNEL_Y2038_SUPPORT 1 */
+#define __ASSUME_KERNEL_Y2038_SUPPORT 1

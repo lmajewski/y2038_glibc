@@ -18,7 +18,8 @@ sysdep_routines += clone umount umount2 readahead \
 		   setfsuid setfsgid epoll_pwait signalfd \
 		   eventfd eventfd_read eventfd_write prlimit \
 		   personality epoll_wait tee vmsplice splice \
-		   open_by_handle_at mlock2 pkey_mprotect pkey_set pkey_get
+		   open_by_handle_at mlock2 pkey_mprotect pkey_set pkey_get \
+		   y2038-support
 
 CFLAGS-gethostid.c = -fexceptions
 CFLAGS-tee.c = -fexceptions -fasynchronous-unwind-tables

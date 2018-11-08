@@ -3,8 +3,8 @@
 
 #ifndef _ISOMAC
 # include <bits/types/locale_t.h>
-# include <bits/types/struct___timespec64.h>
-# include <bits/types/struct___timeval64.h>
+# include <bits/types/struct_timespec64.h>
+# include <bits/types/struct_timeval64.h>
 # include <stdbool.h>
 
 extern __typeof (strftime_l) __strftime_l;

@@ -18,6 +18,7 @@
    <http://www.gnu.org/licenses/>.  */
 
 #include <stdbool.h>
+#include "kernel-features.h"
 
 #ifndef __ASSUME_KERNEL_Y2038_SUPPORT
 

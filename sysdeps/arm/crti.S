@@ -57,6 +57,8 @@
 	.hidden PREINIT_FUNCTION
 #endif
 
+    .file "crti.S"
+
 #if PREINIT_FUNCTION_WEAK
 	.p2align 2
 	.type call_weak_fn, %function

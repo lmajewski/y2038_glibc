@@ -18,6 +18,8 @@
 
 #include <sysdep.h>
 
+	.file "start.S"
+
 /* This is the canonical entry point, usually the first thing in the text
    segment.
 

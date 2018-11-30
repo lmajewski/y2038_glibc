@@ -38,6 +38,8 @@
 #include <sgidefs.h>
 #include <sys/asm.h>
 
+	.file "start.S"
+
 #ifndef ENTRY_POINT
 #error ENTRY_POINT needs to be defined for start.S on MIPS/ELF.
 #endif

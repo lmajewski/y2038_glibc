@@ -39,6 +39,8 @@
    a normal function call) in a high page of memory; tail call to the
    helper.  */
 
+	.file "aeabi_read_tp.S"
+
 	.hidden __aeabi_read_tp
 ENTRY (__aeabi_read_tp)
 #ifdef ARCH_HAS_HARD_TP

@@ -50,6 +50,8 @@
 # define PREINIT_FUNCTION_WEAK 1
 #endif
 
+    .file "crti.S"
+
 #if PREINIT_FUNCTION_WEAK
 	weak_extern (PREINIT_FUNCTION)
 #else

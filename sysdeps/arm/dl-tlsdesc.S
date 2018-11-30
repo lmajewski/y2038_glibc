@@ -21,6 +21,8 @@
 #include <tls.h>
 #include "tlsdesc.h"
 
+	.file "dl-tlsdesc.S"
+
 	.text
 	@ emit debug information with cfi
 	@ use arm-specific pseudos for unwinding itself

@@ -21,6 +21,8 @@
 #include <sysdep.h>
 #include <libc-symbols.h>
 
+	.file "dl-trampoline.S"
+
 	.text
 	.globl _dl_runtime_resolve
 	.type _dl_runtime_resolve, #function

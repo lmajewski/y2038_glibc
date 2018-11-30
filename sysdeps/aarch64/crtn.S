@@ -37,6 +37,8 @@
 /* crtn.S puts function epilogues in the .init and .fini sections
    corresponding to the prologues in crti.S. */
 
+	.file "crtn.S"
+
 	.section .init,"ax",%progbits
 	ldp	x29, x30, [sp], 16
 	RET

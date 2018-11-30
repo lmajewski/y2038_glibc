@@ -27,6 +27,8 @@
    ARM unwind tables for register to register moves, the actual opcodes
    are not defined.  */
 
+      .file "libc-do-syscall.S"
+
 #if defined(__thumb__)
 	.thumb
 	.syntax unified

@@ -22,6 +22,8 @@
 #include <tls.h>
 #include "tlsdesc.h"
 
+	.file "dl-tlsdesc.S"
+
 #define NSAVEDQREGPAIRS	16
 #define SAVE_Q_REGISTERS				\
 	stp	q0, q1,	[sp, #-32*NSAVEDQREGPAIRS]!;	\

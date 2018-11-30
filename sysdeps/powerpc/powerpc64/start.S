@@ -35,6 +35,8 @@
 
 #include <sysdep.h>
 
+	.file "start.S"
+
 /* We do not want .eh_frame info for crt1.o since crt1.o is linked
    before crtbegin.o, the file defining __EH_FRAME_BEGIN__.  */
 #undef cfi_startproc

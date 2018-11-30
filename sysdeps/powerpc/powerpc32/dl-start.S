@@ -18,6 +18,8 @@
 
 #include <sysdep.h>
 
+	.file "dl-start.S"
+
 /* Initial entry point code for the dynamic linker.
    The C function `_dl_start' is the real entry point;
    its return value is the user program's entry point.	*/

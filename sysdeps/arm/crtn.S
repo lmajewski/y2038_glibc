@@ -37,6 +37,8 @@
 #define NO_THUMB
 #include <sysdep.h>
 
+    .file "crtn.S"
+
 /* crtn.S puts function epilogues in the .init and .fini sections
    corresponding to the prologues in crti.S. */
 

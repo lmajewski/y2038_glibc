@@ -1,3 +1,5 @@
+	.file "abi-note.S"
+
 /* Tag_ABI_align8_preserved: This code preserves 8-byte
    alignment in any callee.  */
 	.eabi_attribute 25, 1

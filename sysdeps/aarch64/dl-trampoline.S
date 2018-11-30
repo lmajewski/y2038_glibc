@@ -21,6 +21,8 @@
 
 #include "dl-link.h"
 
+	.file "dl-trampoline.S"
+
 #define ip0 x16
 #define ip0l PTR_REG (16)
 #define ip1 x17

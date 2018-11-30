@@ -18,6 +18,8 @@
 
 #include <sysdep.h>
 
+	.file "__read_tp.S"
+
 	.hidden __read_tp
 ENTRY (__read_tp)
 	mrs	x0, tpidr_el0

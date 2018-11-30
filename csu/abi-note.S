@@ -56,6 +56,8 @@ offset	length	contents
 #include <config.h>
 #include <abi-tag.h>		/* OS-specific ABI tag value */
 
+	.file "abi-note.S"
+
 /* The linker (GNU ld 2.8 and later) recognizes an allocated section whose
    name begins with `.note' and creates a PT_NOTE program header entry
    pointing at it. */

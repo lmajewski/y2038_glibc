@@ -549,18 +549,14 @@ __mktime64 (struct tm *tp)
   return mktime (tp);
 # endif
 }
-#endif /* _LIBC || NEED_MKTIME_WORKING || NEED_MKTIME_WINDOWS */
 
-#ifdef weak_alias
 weak_alias (__mktime64, __timelocal64)
-#endif
-
-#ifdef _LIBC
 libc_hidden_def (__mktime64)
 libc_hidden_weak (__timelocal64)
-#endif
 
-#if __TIMESIZE != 64
+#endif /* _LIBC || NEED_MKTIME_WORKING || NEED_MKTIME_WINDOWS */
+
+#if defined _LIBC && __TIMESIZE != 64
 
 /* The 32-bit-time wrapper.  */
 time_t
@@ -573,13 +569,8 @@ mktime (struct tm *tp)
   return -1;
 }
 
-#ifdef weak_alias
 weak_alias (mktime, timelocal)
-#endif
-
-#ifdef _LIBC
 libc_hidden_def (mktime)
 libc_hidden_weak (timelocal)
-#endif
 
 #endif

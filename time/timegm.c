@@ -35,7 +35,7 @@ __timegm64 (struct tm *tmp)
   return __mktime_internal (tmp, __gmtime64_r, &gmtime_offset);
 }
 
-#if __TIMESIZE != 64
+#if defined _LIBC &&  __TIMESIZE != 64
 
 time_t
 timegm (struct tm *tmp)

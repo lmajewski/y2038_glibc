@@ -22,13 +22,38 @@
 #endif
 
 #include <time.h>
+#include <errno.h>
 
 #include "mktime-internal.h"
+#include <errno.h>
+
+__time64_t
+__timegm64 (struct tm *tmp)
+{
+  static long int gmtime_offset;
+  tmp->tm_isdst = 0;
+  return __mktime_internal (tmp, __gmtime64_r, &gmtime_offset);
+}
+
+#if __TIMESIZE != 64
 
 time_t
 timegm (struct tm *tmp)
 {
+  time_t t;
+  __time64_t t64;
+  struct tm tmp0 = *tmp;
   static mktime_offset_t gmtime_offset;
   tmp->tm_isdst = 0;
-  return __mktime_internal (tmp, __gmtime_r, &gmtime_offset);
+  t64 = __mktime_internal (&tmp0, __gmtime64_r, &gmtime_offset);
+  t = t64;
+  if (t != t64)
+    {
+      __set_errno(EOVERFLOW);
+      return -1;
+    }
+  *tmp = tmp0;
+  return t;
 }
+
+#endif

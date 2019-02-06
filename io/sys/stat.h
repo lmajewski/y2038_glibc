@@ -385,9 +385,9 @@ extern int mkfifoat (int __fd, const char *__path, __mode_t __mode)
 # if defined(__REDIRECT)
 extern int __REDIRECT (utimensat, (int __fd, const char *__path,
            const struct timespec __times[2], int __flags),
-           __utimensat64) __THROW __nonnull((2));
+           __utimensat_time64) __THROW __nonnull((2));
 # else
-# define utimensat __utimensat64
+# define utimensat __utimensat_time64
 # endif
 #endif
 extern int utimensat (int __fd, const char *__path,

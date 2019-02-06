@@ -98,9 +98,9 @@ extern int __REDIRECT (mq_timedsend, (mqd_t __mqdes,
                        const char *__msg_ptr, size_t __msg_len,
                        unsigned int __msg_prio,
                        const struct timespec *__abs_timeout),
-     __mq_timedsend64) __nonnull((2, 5));
+     __mq_timedsend_time64) __nonnull((2, 5));
 #  else
-#   define mq_timedsend __mq_timedsend64
+#   define mq_timedsend __mq_timedsend_time64
 #  endif
 # endif
 extern int mq_timedsend (mqd_t __mqdes, const char *__msg_ptr,

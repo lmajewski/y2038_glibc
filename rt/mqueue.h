@@ -79,9 +79,9 @@ extern ssize_t __REDIRECT (mq_timedreceive, (mqd_t __mqdes,
                            char *__restrict __msg_ptr, size_t __msg_len,
                            unsigned int *__restrict __msg_prio,
                            const struct timespec *__restrict __abs_timeout),
-     __mq_timedreceive64) __nonnull((2, 5));
+     __mq_timedreceive_time64) __nonnull((2, 5));
 #  else
-#   define mq_timedreceive __mq_timedreceive64
+#   define mq_timedreceive __mq_timedreceive_time64
 #  endif
 # endif
 extern ssize_t mq_timedreceive (mqd_t __mqdes, char *__restrict __msg_ptr,

@@ -25,18 +25,18 @@
 /* 64-bit time version */
 
 ssize_t
-__mq_timedreceiv_time64 (mqd_t mqdes, char *__restrict msg_ptr, size_t msg_len,
-			 unsigned int *__restrict msg_prio,
-			 const struct __timespec64 *__restrict abs_timeout)
+__mq_timedreceive_time64 (mqd_t mqdes, char *__restrict msg_ptr, size_t msg_len,
+			  unsigned int *__restrict msg_prio,
+			  const struct __timespec64 *__restrict abs_timeout)
 {
   struct timespec ts32, *tsp32 = NULL;
 
-#ifdef __NR_timedreceiv_time64
+#ifdef __NR_timedreceive_time64
   int result;
 
   if (__y2038_get_kernel_support () > 0)
     {
-      result = INLINE_SYSCALL (mq_timedreceiv_time64, 5, mqdes, msg_ptr, msg_len,
+      result = INLINE_SYSCALL (mq_timedreceive_time64, 5, mqdes, msg_ptr, msg_len,
 			       msg_prio, abs_timeout);
       if (result == 0 || errno != ENOSYS)
 	return result;

@@ -317,9 +317,9 @@ extern int nanosleep (const struct timespec *__requested_time,
 #ifdef __USE_TIME_BITS64
 # if defined(__REDIRECT)
 extern int __REDIRECT (clock_getres, (clockid_t __clock_id, struct
-     timespec *__res), __clock_getres64) __THROW;
+     timespec *__res), __clock_getres_time64) __THROW;
 # else
-# define clock_getres __clock_getres64
+# define clock_getres __clock_getres_time64
 # endif
 #endif
 extern int clock_getres (clockid_t __clock_id, struct timespec *__res) __THROW;

@@ -66,10 +66,6 @@ __fxstat64_time64 (int vers, int fd, struct __stat64_t64 *buf)
   struct stat64 st64;
 
   result = INLINE_SYSCALL (fstat64, 2, fd, &st64);
-#if defined _HAVE_STAT64___ST_INO && !__ASSUME_ST_INO_64_BIT
-  if (__builtin_expect (!result, 1) && st64.__st_ino != (__ino_t) st64.st_ino)
-    st64.st_ino = st64.__st_ino;
-#endif
   if (!result)
     {
       buf->st_dev          = st64.st_dev;

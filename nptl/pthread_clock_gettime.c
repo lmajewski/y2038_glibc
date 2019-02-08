@@ -90,7 +90,7 @@ __pthread_clock_gettime (clockid_t clock_id, hp_timing_t freq,
 	    }
 	  else
 	    {
-	      set_errno(EOVERFLOW);
+	      __set_errno(EOVERFLOW);
 	      res = -1;
 	    }
 	}

@@ -83,7 +83,7 @@ __pthread_clock_gettime (clockid_t clock_id, hp_timing_t freq,
       int res = __pthread_clock_gettime64 (clock_id, freq, &ts64);
       if (res == 0)
 	{
-	  if (fits_in_time_t (ts64.tv_time))
+	  if (fits_in_time_t (ts64.tv_sec))
 	    {
 	      tp->tv_sec = ts64.tv_sec;
 	      tp->tv_nsec = ts64.tv_nsec;

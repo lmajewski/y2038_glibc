@@ -49,7 +49,9 @@ __nanosleep64 (const struct __timespec64 *requested_time,
     {
       remaining->tv_sec = trem32.tv_sec;
       remaining->tv_nsec = trem32.tv_nsec;
+#ifdef TIMSPEC64_TV_PAD_DEFINED
       remaining->tv_pad = 0;
+#endif
     }
 
   return result;

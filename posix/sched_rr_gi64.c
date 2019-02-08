@@ -49,7 +49,9 @@ __sched_rr_get_interval_time64 (pid_t pid, struct __timespec64 *t)
     {
       t->tv_sec = ts32.tv_sec;
       t->tv_nsec = ts32.tv_nsec;
+#ifdef TIMSPEC64_TV_PAD_DEFINED
       t->tv_pad = 0;
+#endif
     }
   return result;
 }

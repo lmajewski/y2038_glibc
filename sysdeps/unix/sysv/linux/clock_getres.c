@@ -57,7 +57,6 @@
   if (retval==0)							\
     {									\
       timespec_to_timespec64(&ts32, res);				\
-      res->tv_pad = 0;							\
     }
 
 #ifdef __NR_clock_getres_time64

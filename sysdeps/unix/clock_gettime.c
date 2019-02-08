@@ -54,7 +54,7 @@ hp_timing_gettime (clockid_t clock_id, struct __timespec64 *tp)
     }
 
   if (clock_id != CLOCK_PROCESS_CPUTIME_ID
-      && __pthread_clock_gettime != NULL)
+      && __pthread_clock_gettime64 != NULL)
     return __pthread_clock_gettime64 (clock_id, freq, tp);
 
   /* Get the current counter.  */

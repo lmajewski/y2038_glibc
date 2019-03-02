@@ -526,7 +526,6 @@ __time64_t
 __mktime64 (struct tm *tp)
 {
   __time64_t t64;
-  time_t t;
   struct tm tp0 = *tp;
   /* POSIX.1 8.1.1 requires that whenever mktime() is called, the
      time zone names contained in the external variable 'tzname' shall
@@ -536,14 +535,8 @@ __mktime64 (struct tm *tp)
 # if defined _LIBC || NEED_MKTIME_WORKING
   static mktime_offset_t localtime_offset;
   t64 = __mktime_internal (&tp0, __localtime64_r, &localtime_offset);
-  t = t64;
-  if (t != t64)
-    {
-      __set_errno(EOVERFLOW);
-      return -1;
-    }
   *tp = tp0;
-  return t;
+  return t64;
 # else
 #  undef mktime
   return mktime (tp);

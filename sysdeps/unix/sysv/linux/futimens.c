@@ -21,7 +21,6 @@
 #include <string.h>
 #include <time.h>
 #include <sysdep.h>
-#include <y2038-support.h>
 
 /* Change the access time of the file associated with FD to TSP[0] and
    the modification time of FILE to TSP[1].
@@ -37,49 +36,40 @@ futimens (int fd, const struct timespec tsp[2])
   return INLINE_SYSCALL (utimensat, 4, fd, NULL, &tsp[0], 0);
 }
 
-/* 64-bit time version */
-
+/* 64-bit time version with 32 bit fallback */
 int
 __futimens64 (int fd, const struct __timespec64 tsp[2])
 {
-  struct timespec ts32[2];
-/* Only try and use this syscall if defined by kernel */
-#ifdef __NR_utimesat_time64
-  struct __timespec64 ts64[2];
-  int res;
-#endif
+	struct timespec ts32[2];
+	struct __timespec64 ts64[2];
+	int res;
 
-  if (fd < 0)
-    return INLINE_SYSCALL_ERROR_RETURN_VALUE (EBADF);
+	if (fd < 0)
+		return INLINE_SYSCALL_ERROR_RETURN_VALUE (EBADF);
 
-/* Only try and use this syscall if defined by kernel */
-#ifdef __NR_utimesat_time64
-  if (__y2038_linux_support > 0)
-    {
-      ts64[0].tv_sec = tsp[0].tv_sec;
-      ts64[0].tv_nsec = tsp[0].tv_nsec;
-      ts64[0].tv_pad = 0;
-      ts64[1].tv_sec = tsp[1].tv_sec;
-      ts64[1].tv_nsec = tsp[1].tv_nsec;
-      ts64[1].tv_pad = 0;
-      res = INLINE_SYSCALL (utimensat_time64, 4, fd, NULL, &ts64[0], 0);
-      if (res == 0 || errno != ENOSYS)
-        return res;
-      __y2038_linux_support = -1;
-    }
-#endif
+	ts64[0].tv_sec = tsp[0].tv_sec;
+	ts64[0].tv_nsec = tsp[0].tv_nsec;
+	ts64[0].tv_pad = 0;
+	ts64[1].tv_sec = tsp[1].tv_sec;
+	ts64[1].tv_nsec = tsp[1].tv_nsec;
+	ts64[1].tv_pad = 0;
+	res = INLINE_SYSCALL (utimensat_time64, 4, fd, NULL, &ts64[0], 0);
+	if (res == 0 || errno != ENOSYS)
+		return res;
 
-  if (! timespec64_to_timespec(&tsp[0], &ts32[0]))
-    {
-      __set_errno(EOVERFLOW);
-      return -1;
-    }
+	/* Linux is not providing this functon - ENOSYS error - fallback
+	   on 32 bits */
+	if (! timespec64_to_timespec(&tsp[0], &ts32[0]))
+		{
+			__set_errno(EOVERFLOW);
+			return -1;
+		}
 
-  if (! timespec64_to_timespec(&tsp[1], &ts32[1]))
-    {
-      __set_errno(EOVERFLOW);
-      return -1;
-    }
+	if (! timespec64_to_timespec(&tsp[1], &ts32[1]))
+		{
+			__set_errno(EOVERFLOW);
+			return -1;
+		}
 
-  return INLINE_SYSCALL (utimensat, 4, fd, NULL, &ts32[0], 0);
+	return INLINE_SYSCALL (utimensat, 4, fd, NULL, &ts32[0], 0);
 }

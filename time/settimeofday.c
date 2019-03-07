@@ -31,7 +31,7 @@ stub_warning (settimeofday)
 weak_alias (__settimeofday, settimeofday)
 
 int
-__settimeofday64 (const struct timeval *tv, const struct timezone *tz)
+__settimeofday64 (const struct __timeval64 *tv, const struct timezone *tz)
 {
   __set_errno (ENOSYS);
   return -1;

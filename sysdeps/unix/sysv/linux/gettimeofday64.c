@@ -33,20 +33,32 @@
 int
 __gettimeofday64 (struct __timeval64 *tv, struct timezone *tz)
 {
-  struct timeval tv32;
+  struct __timespec64 ts64;
   int result;
 
-#ifdef __vdso_gettimeofday
-  result = INLINE_VSYSCALL (gettimeofday, 2, &tv32, tz);
-#else
-  result = INLINE_SYSCALL (gettimeofday, 2, &tv32, tz);
-#endif
+  if (tv) {
+	  ts64.tv_pad = 0;
+	  //#ifdef __vdso_clock_gettime
+	  //	  result = INLINE_VSYSCALL (__clock_gettime64, 2, &ts64);
+	  //#else
+	  //	  result = INLINE_SYSCALL (__clock_gettime64, 2, &ts64);
+	  //#endif
+	  result = __clock_gettime64(CLOCK_REALTIME, &ts64);
+	  if (result)
+		  return result;
 
-  if (result == 0)
-    {
-      tv->tv_sec = tv32.tv_sec;
-      tv->tv_usec = tv32.tv_usec;
-    }
+	  tv->tv_sec = ts64.tv_sec;
+	  tv->tv_usec = ts64.tv_nsec / 1000;
+  }
+
+  if (tz) {
+	  //#ifdef __vdso_gettimeofday
+	  //	  result = INLINE_VSYSCALL (__clock_gettime64, 2, &ts64);
+	  //#else
+	  //	  result = INLINE_SYSCALL (__clock_gettime64, 2, &ts64);
+	  //#endif
+	  result = __gettimeofday(NULL, tz);
+  }
 
   return result;
 }

@@ -22,18 +22,24 @@
 #include <sys/time.h>
 
 int __settimeofday64(const struct __timeval64 *tv,
-                       const struct timezone *tz)
+		       const struct timezone *tz)
 {
-  struct timeval tv32;
+  struct __timespec64 ts64;
+  int ret;
 
-  if (tv && tv->tv_sec > INT_MAX)
-    {
-      __set_errno(EOVERFLOW);
-      return -1;
-    }
+  if (tv) {
+	  ts64.tv_sec = tv->tv_sec;
+	  ts64.tv_nsec = tv->tv_usec * 1000;
+	  ts64.tv_pad = 0;
 
-  tv32.tv_sec = tv->tv_sec;
-  tv32.tv_usec = tv->tv_usec;
+	  ret = __clock_settime64(CLOCK_REALTIME, &ts64);
+	  if (ret)
+		  return ret;
+  }
 
-  return __settimeofday(&tv32, tz);
+  if (tz) {
+	return __settimeofday(NULL, tz);
+  }
+
+  return 0;
 }

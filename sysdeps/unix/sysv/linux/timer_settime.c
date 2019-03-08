@@ -46,8 +46,9 @@ timer_settime (timer_t timerid, int flags, const struct itimerspec *value,
 /* 64-bit time version */
 
 int
-__timer_settime64 (timer_t timerid, int flags, const struct itimerspec *value,
-                   struct itimerspec *ovalue)
+__timer_settime64 (timer_t timerid, int flags,
+		   const struct __itimerspec64 *value,
+		   struct __itimerspec64 *ovalue)
 {
   int res;
   struct timer *kt = (struct timer *) timerid;
@@ -60,13 +61,9 @@ __timer_settime64 (timer_t timerid, int flags, const struct itimerspec *value,
   }
 
 #ifdef __NR_timer_settime64
-  if (__y2038_get_kernel_support () > 0)
-    {
-      res = INLINE_SYSCALL (timer_settime, 3, kt->ktimerid, value, ovalue);
-      if (res == 0 || errno != ENOSYS)
-        return res;
-      __y2038_set_kernel_support (-1);
-    }
+  res = INLINE_SYSCALL (timer_settime64, 4, kt->ktimerid, flags, value, ovalue);
+  if (res == 0 || errno != ENOSYS)
+	  return res;
 #endif
 
   if (value->it_value.tv_sec > INT_MAX

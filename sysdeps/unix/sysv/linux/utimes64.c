@@ -27,22 +27,17 @@
 int
 __utimes64 (const char *file, const struct __timeval64 tvp[2])
 {
-  struct timespec ts32[2], *tsp32 = NULL;
+  struct __timespec64 ts64[2], *tsp64 = NULL;
 
   if (tvp != NULL)
     {
-      if (tvp[0].tv_sec > INT_MAX || tvp[1].tv_sec > INT_MAX)
-        {
-          __set_errno(EOVERFLOW);
-          return -1;
-        }
-      ts32[0].tv_sec = tvp[0].tv_sec;
-      ts32[0].tv_nsec = tvp[0].tv_usec * 1000;
-      ts32[1].tv_sec = tvp[1].tv_sec;
-      ts32[1].tv_nsec = tvp[1].tv_usec * 1000;
-      tsp32 = ts32;
+      ts64[0].tv_sec = tvp[0].tv_sec;
+      ts64[0].tv_nsec = tvp[0].tv_usec * 1000;
+      ts64[1].tv_sec = tvp[1].tv_sec;
+      ts64[1].tv_nsec = tvp[1].tv_usec * 1000;
+      tsp64 = ts64;
     }
 
   /* use utimensat rather than utimes which not all arches can use */
-  return INLINE_SYSCALL (utimensat, 4, AT_FDCWD, file, tsp32, 0);
+  return INLINE_SYSCALL (utimensat_time64, 4, AT_FDCWD, file, tsp64, 0);
 }

@@ -35,12 +35,6 @@ __stime64 (const __time64_t *when)
       return -1;
     }
 
-  if (*when > INT_MAX)
-    {
-      __set_errno (EOVERFLOW);
-      return -1;
-    }
-
   tv.tv_sec = *when;
   tv.tv_usec = 0;
   return __settimeofday64 (&tv, (struct timezone *) 0);

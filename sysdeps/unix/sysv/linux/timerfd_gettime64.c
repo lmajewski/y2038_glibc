@@ -31,13 +31,9 @@ __timerfd_gettime64 (int fd, struct __itimerspec64 *value)
   struct itimerspec value32;
 
 #ifdef __NR_timerfd_gettime64
-  if (__y2038_get_kernel_support () > 0)
-    {
-      res = INLINE_SYSCALL (timerfd_gettime64, 2, fd, value);
-      if (res == 0 || errno != ENOSYS)
-        return res;
-      __y2038_set_kernel_support (-1);
-    }
+  res = INLINE_SYSCALL (timerfd_gettime64, 2, fd, value);
+  if (res == 0 || errno != ENOSYS)
+	  return res;
 #endif
 
   res = INLINE_SYSCALL (timerfd_gettime, 2, fd, &value32);

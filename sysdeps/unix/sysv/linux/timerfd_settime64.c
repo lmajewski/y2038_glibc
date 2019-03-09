@@ -36,13 +36,9 @@ __timerfd_settime64 (int fd, int flags, const struct __itimerspec64 *value,
     return EFAULT;
 
 #ifdef __NR_timerfd_settime64
-  if (__y2038_get_kernel_support () > 0)
-    {
-      res = INLINE_SYSCALL (timerfd_settime64, 3, fd, value, ovalue);
-      if (res == 0 || errno != ENOSYS)
-        return res;
-      __y2038_set_kernel_support (-1);
-    }
+  res = INLINE_SYSCALL (timerfd_settime64, 4, fd, flags, value, ovalue);
+  if (res == 0 || errno != ENOSYS)
+	  return res;
 #endif
 
   if (value->it_value.tv_sec > INT_MAX

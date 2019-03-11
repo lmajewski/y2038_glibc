@@ -33,9 +33,9 @@ __utime64 (const char *file, const struct __utimbuf64 *times)
 
   if (times != NULL)
     {
-      timevals[0].tv_sec = (time_t) times->actime;
+      timevals[0].tv_sec = times->actime;
       timevals[0].tv_usec = 0L;
-      timevals[1].tv_sec = (time_t) times->modtime;
+      timevals[1].tv_sec = times->modtime;
       timevals[1].tv_usec = 0L;
       tvp = timevals;
     }

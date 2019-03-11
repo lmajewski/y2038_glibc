@@ -74,10 +74,13 @@ __xstat64_time64 (int vers, const char *name, struct __stat64_t64 *buf)
 
       buf->st_atim.tv_sec  = st64.st_atim.tv_sec;
       buf->st_atim.tv_nsec = st64.st_atim.tv_nsec;
+      buf->st_atim.tv_pad = 0;
       buf->st_mtim.tv_sec  = st64.st_mtim.tv_sec;
       buf->st_mtim.tv_nsec = st64.st_mtim.tv_nsec;
+      buf->st_mtim.tv_pad = 0;
       buf->st_ctim.tv_sec  = st64.st_ctim.tv_sec;
       buf->st_ctim.tv_nsec = st64.st_ctim.tv_nsec;
+      buf->st_ctim.tv_pad = 0;
 
       buf->st_ino          = st64.st_ino;
     }

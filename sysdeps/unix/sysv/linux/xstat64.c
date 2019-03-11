@@ -59,17 +59,17 @@ __xstat64_time64 (int vers, const char *name, struct __stat64_t64 *buf)
   if (!result)
     {
       buf->st_dev          = st64.st_dev;
-#if defined _HAVE_STAT64___ST_INO
+ #if defined _HAVE_STAT64___ST_INO
       buf->__st_ino        = st64.__st_ino;
-#endif
+ #endif
       buf->st_mode         = st64.st_mode;
       buf->st_nlink        = st64.st_nlink;
-      buf->st_uid          = st64.st_uid;		 
-      buf->st_gid          = st64.st_gid;		 
-      buf->st_rdev         = st64.st_rdev;		 
-      buf->st_size         = st64.st_size;		 
+      buf->st_uid          = st64.st_uid;
+      buf->st_gid          = st64.st_gid;
+      buf->st_rdev         = st64.st_rdev;
+      buf->st_size         = st64.st_size;
       buf->st_blksize      = st64.st_blksize;
-    
+
       buf->st_blocks       = st64.st_blocks;
 
       buf->st_atim.tv_sec  = st64.st_atim.tv_sec;

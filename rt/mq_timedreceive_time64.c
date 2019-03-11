@@ -33,15 +33,10 @@ __mq_timedreceive_time64 (mqd_t mqdes, char *__restrict msg_ptr, size_t msg_len,
 
 #ifdef __NR_timedreceive_time64
   int result;
-
-  if (__y2038_get_kernel_support () > 0)
-    {
-      result = INLINE_SYSCALL (mq_timedreceive_time64, 5, mqdes, msg_ptr, msg_len,
-			       msg_prio, abs_timeout);
-      if (result == 0 || errno != ENOSYS)
-	return result;
-      __y2038_set_kernel_support (-1);
-    }
+  result = INLINE_SYSCALL (mq_timedreceive_time64, 5, mqdes, msg_ptr, msg_len,
+                           msg_prio, abs_timeout);
+  if (result == 0 || errno != ENOSYS)
+	  return result;
 #endif
 
   if (abs_timeout)

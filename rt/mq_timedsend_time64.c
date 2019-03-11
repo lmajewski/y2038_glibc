@@ -31,15 +31,10 @@ __mq_timedsend_time64 (mqd_t mqdes, const char *msg_ptr, size_t msg_len,
   struct timespec ts32, *tsp32 = NULL;
 #ifdef __NR_mq_timedsend_time64
   int result;
-  
-  if (__y2038_get_kernel_support () > 0)
-    {
-      result = INLINE_SYSCALL (mq_timedsend_time64, 5, mqdes, msg_ptr,
-			       msg_len, msg_prio, abs_timeout);
-      if (result == 0 || errno != ENOSYS)
-        return result;
-      __y2038_set_kernel_support (-1);
-    }
+  result = INLINE_SYSCALL (mq_timedsend_time64, 5, mqdes, msg_ptr,
+                           msg_len, msg_prio, abs_timeout);
+  if (result == 0 || errno != ENOSYS)
+	  return result;
 #endif
 
   if (abs_timeout)

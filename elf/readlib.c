@@ -51,7 +51,7 @@ static struct known_names interpreters[] =
 #ifdef SYSDEP_KNOWN_INTERPRETER_NAMES
   SYSDEP_KNOWN_INTERPRETER_NAMES
 #endif
-  OECORE_KNOWN_INTERPRETER_NAMES
+  {"/lib/ld-linux.so.3",FLAG_ELF_LIBC6 }
 };
 
 static struct known_names known_libs[] =

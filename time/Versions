@@ -90,5 +90,7 @@ libc {
     __getitimer64;
     __setitimer64;
     __difftime64;
+    __pselect64;
+    __select64;
   }
 }

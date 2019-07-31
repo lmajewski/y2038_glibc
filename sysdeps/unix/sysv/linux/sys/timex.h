@@ -71,7 +71,7 @@ extern int __adjtimex (struct timex *__ntx) __THROW;
 
 #ifdef __USE_TIME_BITS64
 # if defined(__REDIRECT)
-extern time_t __REDIRECT (adjtimex, (struct timex *__ntx),
+extern int __REDIRECT (adjtimex, (struct timex *__ntx),
      __adjtimex64) __THROW;
 # else
 # define adjtimex __adjtimex64

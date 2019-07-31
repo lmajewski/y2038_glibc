@@ -271,9 +271,9 @@ extern int sigwaitinfo (const sigset_t *__restrict __set,
 extern int __REDIRECT (sigtimedwait, (const sigset_t *__restrict __set,
 			 siginfo_t *__restrict __info,
 			 const struct timespec *__restrict __timeout),
-     __sigtimedwait64) __nonnull ((1));
+     __sigtimedwait_time64) __nonnull ((1));
 # else
-# define sigtimedwait __sigtimedwait64
+# define sigtimedwait __sigtimedwait_time64
 # endif
 #endif
 extern int sigtimedwait (const sigset_t *__restrict __set,

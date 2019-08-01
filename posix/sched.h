@@ -75,10 +75,10 @@ extern int sched_get_priority_min (int __algorithm) __THROW;
 
 /* Get the SCHED_RR interval for the named process.  */
 #ifdef __USE_TIME_BITS64
-# if defined(__REDIRECT)
-extern int __REDIRECT (sched_rr_get_interval,
+# if defined(__REDIRECT_NTH)
+extern int __REDIRECT_NTH (sched_rr_get_interval,
                        (__pid_t __pid, struct timespec *__t),
-                       __sched_rr_get_interval_time64) __THROW;
+                       __sched_rr_get_interval_time64);
 # else
 # define sched_rr_get_interval __sched_rr_get_interval_time64
 # endif

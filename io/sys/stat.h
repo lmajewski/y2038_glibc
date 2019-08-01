@@ -382,10 +382,10 @@ extern int mkfifoat (int __fd, const char *__path, __mode_t __mode)
 /* Set file access and modification times relative to directory file
    descriptor.  */
 #ifdef __USE_TIME_BITS64
-# if defined(__REDIRECT)
-extern int __REDIRECT (utimensat, (int __fd, const char *__path,
+# if defined(__REDIRECT_NTH)
+extern int __REDIRECT_NTH (utimensat, (int __fd, const char *__path,
            const struct timespec __times[2], int __flags),
-           __utimensat_time64) __THROW __nonnull((2));
+           __utimensat_time64) __nonnull((2));
 # else
 # define utimensat __utimensat_time64
 # endif
@@ -399,9 +399,9 @@ extern int utimensat (int __fd, const char *__path,
 #ifdef __USE_XOPEN2K8
 /* Set file access and modification times of the file associated with FD.  */
 #ifdef __USE_TIME_BITS64
-# if defined(__REDIRECT)
-extern int __REDIRECT (futimens, (int __fd, const struct timespec __times[2]),
-           __futimens64) __THROW;
+# if defined(__REDIRECT_NTH)
+extern int __REDIRECT_NTH (futimens, (int __fd, const struct timespec __times[2]),
+           __futimens64);
 # else
 # define futimens __futimens64
 # endif

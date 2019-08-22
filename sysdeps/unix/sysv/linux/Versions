@@ -175,6 +175,8 @@ libc {
   }
   GLIBC_2.29 {
     getcpu;
+    __timerfd_gettime64;
+    __timerfd_settime64;
   }
   GLIBC_PRIVATE {
     # functions used in other libraries

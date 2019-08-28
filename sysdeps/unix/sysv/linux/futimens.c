@@ -47,29 +47,38 @@ __futimens64 (int fd, const struct __timespec64 tsp[2])
 	if (fd < 0)
 		return INLINE_SYSCALL_ERROR_RETURN_VALUE (EBADF);
 
-	ts64[0].tv_sec = tsp[0].tv_sec;
-	ts64[0].tv_nsec = tsp[0].tv_nsec;
-	ts64[0].tv_pad = 0;
-	ts64[1].tv_sec = tsp[1].tv_sec;
-	ts64[1].tv_nsec = tsp[1].tv_nsec;
-	ts64[1].tv_pad = 0;
-	res = INLINE_SYSCALL (utimensat_time64, 4, fd, NULL, &ts64[0], 0);
+        if (tsp == NULL) {
+          res = INLINE_SYSCALL (utimensat_time64, 4, fd, NULL, NULL, 0);
+        } else {
+          ts64[0].tv_sec = tsp[0].tv_sec;
+          ts64[0].tv_nsec = tsp[0].tv_nsec;
+          ts64[0].tv_pad = 0;
+          ts64[1].tv_sec = tsp[1].tv_sec;
+          ts64[1].tv_nsec = tsp[1].tv_nsec;
+          ts64[1].tv_pad = 0;
+          res = INLINE_SYSCALL (utimensat_time64, 4, fd, NULL, &ts64[0], 0);
+        }
+
 	if (res == 0 || errno != ENOSYS)
 		return res;
 
 	/* Linux is not providing this functon - ENOSYS error - fallback
 	   on 32 bits */
-	if (! timespec64_to_timespec(&tsp[0], &ts32[0]))
-		{
-			__set_errno(EOVERFLOW);
-			return -1;
-		}
+        if (tsp == NULL) {
+          return INLINE_SYSCALL (utimensat, 4, fd, NULL, NULL, 0);
+        } else {
+          if (! timespec64_to_timespec(&tsp[0], &ts32[0]))
+            {
+              __set_errno(EOVERFLOW);
+              return -1;
+            }
 
-	if (! timespec64_to_timespec(&tsp[1], &ts32[1]))
-		{
-			__set_errno(EOVERFLOW);
-			return -1;
-		}
+          if (! timespec64_to_timespec(&tsp[1], &ts32[1]))
+            {
+              __set_errno(EOVERFLOW);
+              return -1;
+            }
 
-	return INLINE_SYSCALL (utimensat, 4, fd, NULL, &ts32[0], 0);
+          return INLINE_SYSCALL (utimensat, 4, fd, NULL, &ts32[0], 0);
+        }
 }

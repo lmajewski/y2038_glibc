@@ -21,6 +21,7 @@
 #include <sys/stat.h>
 #include <kernel_stat.h>
 
+#include <fcntl.h>
 #include <sysdep.h>
 #include <sys/syscall.h>
 
@@ -88,7 +89,7 @@ __xstat64_time64 (int vers, const char *name, struct __stat64_t64 *buf)
 	 via statx - as stat{64} syscall can only handle 32bits. */
 #ifdef __NR_statx
       struct statx stx;
-      result = INLINE_SYSCALL_CALL (statx, 0, name, 0,
+      result = INLINE_SYSCALL_CALL (statx, AT_FDCWD, name, 0,
 				    STATX_ATIME | STATX_MTIME | STATX_CTIME,
 				    &stx);
       if (!result) {

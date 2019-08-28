@@ -27,6 +27,7 @@
 #include <sys/syscall.h>
 
 #include <statx_cp.h>
+#include <fcntl.h>
 
 /* Get information about the file NAME in BUF.  */
 
@@ -94,7 +95,23 @@ __fxstatat64_time64 (int vers, int fd, const char *file, struct __stat64_t64 *bu
       buf->st_ctim.tv_nsec = st64.st_ctim.tv_nsec;	
     
       buf->st_ino          = st64.st_ino;
-    
+
+      /* For Y2038 being safe we provide explicitly 64 bit time data types
+         via statx - as fstat{64} syscall can only handle 32bits. */
+# ifdef __NR_statx
+      struct statx stx;
+      result = INLINE_SYSCALL_CALL (statx, fd, NULL, AT_EMPTY_PATH,
+                                    STATX_ATIME | STATX_MTIME | STATX_CTIME,
+                                    &stx);
+      if (!result) {
+        buf->st_atim.tv_sec  = stx.stx_atime.tv_sec;
+        buf->st_atim.tv_nsec = stx.stx_atime.tv_nsec;
+        buf->st_mtim.tv_sec  = stx.stx_mtime.tv_sec;
+        buf->st_mtim.tv_nsec = stx.stx_mtime.tv_nsec;
+        buf->st_ctim.tv_sec  = stx.stx_ctime.tv_sec;
+        buf->st_ctim.tv_nsec = stx.stx_ctime.tv_nsec;
+      }
+# endif
       return 0;
     }
   else

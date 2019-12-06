@@ -305,5 +305,20 @@ libpthread {
     __futex_abstimed_wait64; __futex_abstimed_wait_cancelable64;
     __shm_directory;
     __libpthread_freeres;
+    __pthread_timedjoin_np64;
+    __pthread_clockjoin_np64;
+    __pthread_cond_timedwait64;
+    __pthread_cond_clockwait64;
+    __sem_clockwait64;
+    __sem_timedwait64;
+    __pthread_rwlock_clockrdlock64;
+    __pthread_rwlock_clockwrlock64;
+    __pthread_rwlock_timedrdlock64;
+    __pthread_rwlock_timedwrlock64;
+    __pthread_mutex_timedlock64;
+    __pthread_mutex_clocklock64;
+    __cnd_timedwait64;
+    __mtx_timedlock64;
+    __thrd_sleep64;
   }
 }

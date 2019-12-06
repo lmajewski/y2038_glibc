@@ -1,4 +1,25 @@
 libc {
+  GLIBC_PRIVATE {
+    __difftime64;
+    __mktime64;
+    __timegm64;
+    __ctime64;
+    __ctime64_r;
+    __gmtime64;
+    __gmtime64_r;
+    __clock_settime64;
+    __clock_getres64;
+    __clock_nanosleep_time64;
+    __utimensat64;
+    __futimens64;
+    __timer_gettime64;
+    __timer_settime64;
+    __timespec_get64;
+    __settimeofday64;
+    __gettimeofday64;
+    __getitimer64;
+    __setitimer64;
+  }
   GLIBC_2.0 {
     # global variables
     __daylight; __timezone; __tzname;
@@ -78,5 +99,8 @@ libc {
     # same as clock_gettime; used in other libraries
     __clock_gettime;
     __clock_gettime64;
+    __adjtime64;
+    ___adjtimex64;
+    __time64;
   }
 }

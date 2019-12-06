@@ -179,5 +179,12 @@ libc {
     __sigtimedwait;
     # functions used by nscd
     __netlink_assert_response;
+    __timerfd_gettime64;
+    __timerfd_settime64;
+    __sched_rr_get_interval64;
+    __clock_adjtime64;
+    __ntp_gettime64;
+    __ntp_gettimex64;
+    __recvmmsg64;
   }
 }

@@ -150,5 +150,7 @@ libc {
   GLIBC_PRIVATE {
     __libc_fork; __libc_pread; __libc_pwrite;
     __nanosleep_nocancel; __pause_nocancel;
+    __wait4_time64; __pselect64;
+    __nanosleep64; __wait3_time64;
   }
 }

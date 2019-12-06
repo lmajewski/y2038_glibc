@@ -32,10 +32,15 @@
    for little-endian ones, like x32.  */
 struct rusage
   {
+#ifdef __USE_TIME_BITS64
+    struct __timeval64 ru_utime;
+    struct __timeval64 ru_stime;
+#else
     /* Total amount of user time used.  */
     struct timeval ru_utime;
     /* Total amount of system time used.  */
     struct timeval ru_stime;
+#endif
     /* Maximum resident set size (in kilobytes).  */
     __extension__ union
       {

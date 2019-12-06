@@ -16,5 +16,7 @@ libc {
   GLIBC_PRIVATE {
     # Cancellation point entries.
     __libc_msgrcv; __libc_msgsnd;
+    __semtimedop64; __shmctl64;
+    __semctl64; __msgctl64;
   }
 }

@@ -51,4 +51,7 @@ libc {
   }
   GLIBC_2.21 {
   }
+  GLIBC_PRIVATE {
+    __sigtimedwait64;
+  }
 }

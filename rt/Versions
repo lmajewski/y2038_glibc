@@ -1,4 +1,10 @@
 librt {
+  GLIBC_PRIVATE {
+    __timer_gettime64;
+    __timer_settime64;
+    __mq_timedsend_time64;
+    __mq_timedreceive_time64;
+  }
   GLIBC_2.1 {
     # AIO functions.
     aio_cancel; aio_cancel64; aio_error; aio_error64; aio_fsync; aio_fsync64;

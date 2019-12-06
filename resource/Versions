@@ -24,5 +24,6 @@ libc {
   }
   GLIBC_PRIVATE {
     __getrlimit;
+    __getrusage64;
   }
 }

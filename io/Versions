@@ -141,5 +141,7 @@ libc {
     __file_change_detection_for_stat;
     __file_change_detection_for_path;
     __file_change_detection_for_fp;
+    __ppoll64;
+    __utime64;
   }
 }

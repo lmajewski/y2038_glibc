@@ -96,6 +96,16 @@ extern ssize_t __sendmsg (int __fd, const struct msghdr *__message,
 extern int __sendmmsg (int __fd, struct mmsghdr *__vmessages,
                        unsigned int __vlen, int __flags);
 libc_hidden_proto (__sendmmsg)
+
+# include <struct___timespec64.h>
+# if __TIMESIZE == 64
+#  define __recvmmsg_time64 __recvmmsg
+# else
+extern int __recvmmsg_time64 (int fd, struct mmsghdr *vmessages,
+                              unsigned int vlen, int flags,
+                              struct __timespec64 *tmo);
+libc_hidden_proto (__recvmmsg_time64)
+# endif
 #endif
 
 /* Receive a message as described by MESSAGE from socket FD.

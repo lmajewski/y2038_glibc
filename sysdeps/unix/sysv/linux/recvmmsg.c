@@ -25,12 +25,54 @@
 #include <kernel-features.h>
 
 int
-recvmmsg (int fd, struct mmsghdr *vmessages, unsigned int vlen, int flags,
-	  struct timespec *tmo)
+__recvmmsg_time64 (int fd, struct mmsghdr *vmessages, unsigned int vlen,
+                   int flags, struct __timespec64 *tmo)
 {
 #ifdef __ASSUME_RECVMMSG_SYSCALL
-  return SYSCALL_CANCEL (recvmmsg, fd, vmessages, vlen, flags, tmo);
+# ifdef __ASSUME_TIME64_SYSCALLS
+#  ifndef __NR_recvmmsg_time64
+#   define __NR_recvmmsg_time64 __NR_recvmmsg
+#  endif
+  return SYSCALL_CANCEL (recvmmsg_time64, fd, vmessages, vlen, flags, tmo);
+# else
+  int ret = SYSCALL_CANCEL (recvmmsg_time64, fd, vmessages, vlen, flags, tmo);
+  if (ret == 0 || errno != ENOSYS)
+    return ret;
+
+  struct timespec ts32;
+  if (tmo != NULL)
+    {
+      if (! in_time_t_range (tmo->tv_sec))
+        {
+          __set_errno (EOVERFLOW);
+          return -1;
+        }
+
+      ts32 = valid_timespec64_to_timespec (*tmo);
+    }
+
+  return SYSCALL_CANCEL (recvmmsg, fd, vmessages, vlen, flags,
+                         tmo != NULL ? &ts32 : NULL);
+# endif
 #else
   return SOCKETCALL_CANCEL (recvmmsg, fd, vmessages, vlen, flags, tmo);
 #endif
 }
+
+#if __TIMESIZE != 64
+libc_hidden_def (__recvmmsg_time64)
+
+int
+__recvmmsg (int fd, struct mmsghdr *vmessages, unsigned int vlen, int flags,
+            struct timespec *tmo)
+{
+  struct __timespec64 ts64;
+
+  if (tmo != NULL)
+     ts64 = valid_timespec_to_timespec64 (*tmo);
+
+  return __recvmmsg_time64 (fd, vmessages, vlen, flags,
+                            tmo != NULL ? &ts64 : NULL);
+}
+#endif
+strong_alias (__recvmmsg, recvmmsg)

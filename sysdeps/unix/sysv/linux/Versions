@@ -196,5 +196,6 @@ libc {
     __clock_adjtime64;
     __ntp_gettime64;
     __ntp_gettimex64;
+    __recvmmsg_time64;
   }
 }

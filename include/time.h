@@ -11,7 +11,6 @@
 # include <sys/time.h>
 # include <time-clockid.h>
 # include <sys/time.h>
-# include <sys/poll.h>
 
 extern __typeof (strftime_l) __strftime_l;
 libc_hidden_proto (__strftime_l)
@@ -308,10 +307,6 @@ libc_hidden_proto (__clock_gettime64)
 extern int __timespec_get64 (struct __timespec64 *ts, int base);
 libc_hidden_proto (__timespec_get64)
 #endif
-
-extern int __ppoll (struct pollfd *fds, nfds_t nfds,
-                    const struct timespec *timeout,
-                    const sigset_t *sigmask);
 
 /* Use in the clock_* functions.  Size of the field representing the
    actual clock ID.  */

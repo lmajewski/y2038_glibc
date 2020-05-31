@@ -4,8 +4,8 @@ not) and tests.
 
 # Error-checking wrappers
 
-These wrappers test for error return codes an terminate the process on
-error.  They are declared in these header files:
+These wrappers test for error return codes and terminate the process on
+error. They are declared in these header files:
 
 * support.h
 * xsignal.h

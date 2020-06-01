@@ -28,7 +28,7 @@ static int
 nanosleep_call (const struct timespec *req, struct timespec *rem)
 {
   mach_port_t recv;
-  struct timespec before;
+  struct __timespec64 before;
   error_t err;
 
   const mach_msg_timeout_t ms
@@ -38,7 +38,7 @@ nanosleep_call (const struct timespec *req, struct timespec *rem)
   recv = __mach_reply_port ();
 
   if (rem != NULL)
-    __clock_gettime (CLOCK_REALTIME, &before);
+    __clock_gettime64 (CLOCK_REALTIME, &before);
 
   int cancel_oldtype = LIBC_CANCEL_ASYNC();
   err = __mach_msg (NULL, MACH_RCV_MSG|MACH_RCV_TIMEOUT|MACH_RCV_INTERRUPT,
@@ -51,10 +51,12 @@ nanosleep_call (const struct timespec *req, struct timespec *rem)
     {
       if (rem != NULL)
 	{
-	  struct timespec after, elapsed;
-	  __clock_gettime (CLOCK_REALTIME, &after);
+	  struct __timespec64 after, elapsed, rem64, req64;
+	  __clock_gettime64 (CLOCK_REALTIME, &after);
 	  timespec_sub (&elapsed, &after, &before);
-	  timespec_sub (rem, req, &elapsed);
+	  req64 = valid_timespec_to_timespec64 (*req);
+	  timespec_sub (&rem64, &req64, &elapsed);
+	  *rem = valid_timespec64_to_timespec (rem64);
 	}
 
       return EINTR;

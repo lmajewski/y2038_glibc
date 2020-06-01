@@ -115,7 +115,8 @@ timer_delref (struct timer_node *timer)
 /* Timespec helper routines.  */
 static inline int
 __attribute ((always_inline))
-timespec_compare (const struct timespec *left, const struct timespec *right)
+timespec_compare (const struct __timespec64 *left,
+                  const struct __timespec64 *right)
 {
   if (left->tv_sec < right->tv_sec)
     return -1;
@@ -131,8 +132,8 @@ timespec_compare (const struct timespec *left, const struct timespec *right)
 }
 
 static inline void
-timespec_add (struct timespec *sum, const struct timespec *left,
-	      const struct timespec *right)
+timespec_add (struct __timespec64 *sum, const struct __timespec64 *left,
+              const struct __timespec64 *right)
 {
   sum->tv_sec = left->tv_sec + right->tv_sec;
   sum->tv_nsec = left->tv_nsec + right->tv_nsec;
@@ -145,8 +146,8 @@ timespec_add (struct timespec *sum, const struct timespec *left,
 }
 
 static inline void
-timespec_sub (struct timespec *diff, const struct timespec *left,
-	      const struct timespec *right)
+timespec_sub (struct __timespec64 *diff, const struct __timespec64 *left,
+              const struct __timespec64 *right)
 {
   diff->tv_sec = left->tv_sec - right->tv_sec;
   diff->tv_nsec = left->tv_nsec - right->tv_nsec;

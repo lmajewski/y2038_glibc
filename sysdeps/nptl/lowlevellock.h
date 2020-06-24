@@ -123,7 +123,7 @@ extern void __lll_lock_wait (int *futex, int private) attribute_hidden;
 
 
 extern int __lll_clocklock_wait (int *futex, int val, clockid_t,
-				 const struct timespec *,
+				 const struct __timespec64 *,
 				 int private) attribute_hidden;
 
 #define lll_timedwait(futex, val, clockid, abstime, private)		\

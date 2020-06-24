@@ -65,14 +65,82 @@
   (((fl) | FUTEX_PRIVATE_FLAG) ^ (private))
 # endif
 
-# define lll_futex_syscall(nargs, futexp, op, ...)                      \
+# define __lll_futex_syscall(nargs, futexp, op, ...)		        \
   ({                                                                    \
-    long int __ret = INTERNAL_SYSCALL (futex, nargs, futexp, op, 	\
+    long int __ret = INTERNAL_SYSCALL (futex, nargs, futexp, op,        \
 				       __VA_ARGS__);                    \
     (__glibc_unlikely (INTERNAL_SYSCALL_ERROR_P (__ret))         	\
      ? -INTERNAL_SYSCALL_ERRNO (__ret) : 0);                     	\
   })
 
+# define __lll_futex_syscall64(nargs, futexp, op, ...)	\
+  ({                                                                    \
+    long int __ret = INTERNAL_SYSCALL (futex_time64, nargs, futexp, op,	\
+				       __VA_ARGS__);			\
+    (__glibc_unlikely (INTERNAL_SYSCALL_ERROR_P (__ret))         	\
+     ? -INTERNAL_SYSCALL_ERRNO (__ret) : 0);                     	\
+  })
+
+# ifdef __ASSUME_TIME64_SYSCALLS
+#  ifndef __NR_futex_time64
+#   define __NR_futex_time64 __NR_futex
+#  endif
+#  define lll_futex_syscall(nargs, futexp, op, ...)			\
+  __lll_futex_syscall64(nargs, futexp, op, __VA_ARGS__)
+#  define lll_futex_syscall_time64_4(nargs, futexp, op, val, timeout)\
+  __lll_futex_syscall64(nargs, futexp, op, val, timeout)
+#  define lll_futex_syscall_time64(nargs, futexp, op, val, timeout, ...)\
+  __lll_futex_syscall64(nargs, futexp, op, val, timeout, __VA_ARGS__)
+# else
+inline static long int
+__lll_futex_syscall_time_check (long int __ret, const struct __timespec64 *t)
+{
+  if (! (__ret == 0 || errno != ENOSYS))
+      if (t != NULL && ! in_time_t_range (t->tv_sec))
+	__ret = ({ errno = (EOVERFLOW); -1l; });
+  return __ret;
+}
+#  define lll_futex_syscall(nargs, futexp, op, ...)			\
+  ({                                                                    \
+    long int __ret =                                                    \
+    __lll_futex_syscall64(nargs, futexp, op, __VA_ARGS__);	\
+    if (! (__ret == 0 || errno != ENOSYS))                              \
+      __ret =                                                           \
+        __lll_futex_syscall(nargs, futexp, op, __VA_ARGS__);     \
+    __ret;                                                              \
+  })
+
+#  define lll_futex_syscall_time64(nargs, futexp, op, val, timeout, ...)\
+  ({                                                                    \
+    struct timespec __ts32;						\
+    if (timeout != NULL)                                                \
+      __ts32 = valid_timespec64_to_timespec (*((struct __timespec64*) timeout)); \
+    long int __ret =                                                    \
+      __lll_futex_syscall64(nargs, futexp, op, val, timeout,\
+			  __VA_ARGS__);					\
+    __ret = __lll_futex_syscall_time_check (__ret, timeout);            \
+    if (__ret != 0)                                                     \
+      __ret = __lll_futex_syscall(nargs, futexp, op, val,        \
+				  timeout != NULL ? &__ts32 : NULL,     \
+				  __VA_ARGS__);				\
+    __ret;                                                              \
+  })
+
+#  define lll_futex_syscall_time64_4(nargs, futexp, op, val, timeout)\
+  ({                                                                    \
+    struct timespec __ts32;						\
+    if (timeout != NULL)                                                \
+      __ts32 = valid_timespec64_to_timespec (*((struct __timespec64*) timeout)); \
+    long int __ret =                                                    \
+      __lll_futex_syscall64(nargs, futexp, op, val, timeout);		\
+    __ret = __lll_futex_syscall_time_check (__ret, timeout);            \
+    if (__ret != 0)                                                     \
+      __ret = __lll_futex_syscall(nargs, futexp, op, val,               \
+				  timeout != NULL ? &__ts32 : NULL);	\
+    __ret;                                                              \
+  })
+
+# endif
 /* For most of these macros, the return value is never really used.
    Nevertheless, the protocol is that each one returns a negated errno
    code for failure or zero for success.  (Note that the corresponding
@@ -85,7 +153,7 @@
   lll_futex_timed_wait (futexp, val, NULL, private)
 
 # define lll_futex_timed_wait(futexp, val, timeout, private)     \
-  lll_futex_syscall (4, futexp,                                 \
+  lll_futex_syscall_time64_4 (4, futexp,                                 \
 		     __lll_private_flag (FUTEX_WAIT, private),  \
 		     val, timeout)
 
@@ -107,7 +175,7 @@
         const int op =                                                  \
           __lll_private_flag (FUTEX_WAIT_BITSET | clockbit, private);   \
                                                                         \
-        __ret = lll_futex_syscall (6, futexp, op, val,                  \
+        __ret = lll_futex_syscall_time64 (6, futexp, op, val,           \
                                    timeout, NULL /* Unused.  */,	\
                                    FUTEX_BITSET_MATCH_ANY);		\
       }                                                                 \
@@ -118,7 +186,7 @@
 
 /* Wake up up to NR waiters on FUTEXP.  */
 # define lll_futex_wake(futexp, nr, private)                             \
-  lll_futex_syscall (4, futexp,                                         \
+  lll_futex_syscall_time64_4 (4, futexp,                                 \
 		     __lll_private_flag (FUTEX_WAKE, private), nr, 0)
 
 /* Wake up up to NR_WAKE waiters on FUTEXP.  Move up to NR_MOVE of the
@@ -159,7 +227,7 @@
 /* Like lll_futex_wait_requeue_pi, but with a timeout.  */
 # define lll_futex_timed_wait_requeue_pi(futexp, val, timeout, clockbit, \
                                         mutex, private)                 \
-  lll_futex_syscall (5, futexp,                                         \
+  lll_futex_syscall_time64 (5, futexp,                                  \
 		     __lll_private_flag (FUTEX_WAIT_REQUEUE_PI          \
 					 | (clockbit), private),        \
 		     val, timeout, mutex)

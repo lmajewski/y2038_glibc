@@ -19,10 +19,26 @@
 #include "pthreadP.h"
 
 int
-__pthread_timedjoin_np (pthread_t threadid, void **thread_return,
-			const struct timespec *abstime)
+__pthread_timedjoin_np64 (pthread_t threadid, void **thread_return,
+                          const struct __timespec64 *abstime)
 {
   return __pthread_clockjoin_ex (threadid, thread_return,
                                  CLOCK_REALTIME, abstime, true);
 }
+
+#if __TIMESIZE != 64
+libc_hidden_def (__pthread_timedjoin_np64)
+
+int
+__pthread_timedjoin_np (pthread_t threadid, void **thread_return,
+                        const struct timespec *abstime)
+{
+  struct __timespec64 ts64;
+  if (abstime != NULL)
+    ts64 = valid_timespec_to_timespec64 (*abstime);
+
+  return __pthread_timedjoin_np64 (threadid, thread_return,
+                                   abstime != NULL ? &ts64 : NULL);
+}
+#endif
 weak_alias (__pthread_timedjoin_np, pthread_timedjoin_np)

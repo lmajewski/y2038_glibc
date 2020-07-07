@@ -45,7 +45,7 @@
 int
 __pthread_mutex_clocklock_common (pthread_mutex_t *mutex,
 				  clockid_t clockid,
-				  const struct timespec *abstime)
+				  const struct __timespec64 *abstime)
 {
   int oldval;
   pid_t id = THREAD_GETMEM (THREAD_SELF, tid);
@@ -543,10 +543,10 @@ __pthread_mutex_clocklock_common (pthread_mutex_t *mutex,
 			goto failpp;
 		      }
 
-		    struct timespec rt;
+		    struct __timespec64 rt;
 
 		    /* Get the current time.  */
-		    __clock_gettime (CLOCK_REALTIME, &rt);
+		    __clock_gettime64 (CLOCK_REALTIME, &rt);
 
 		    /* Compute relative timeout.  */
 		    rt.tv_sec = abstime->tv_sec - rt.tv_sec;
@@ -599,9 +599,9 @@ __pthread_mutex_clocklock_common (pthread_mutex_t *mutex,
 }
 
 int
-__pthread_mutex_clocklock (pthread_mutex_t *mutex,
-			   clockid_t clockid,
-			   const struct timespec *abstime)
+__pthread_mutex_clocklock64 (pthread_mutex_t *mutex,
+                             clockid_t clockid,
+                             const struct __timespec64 *abstime)
 {
   if (__glibc_unlikely (!lll_futex_supported_clockid (clockid)))
     return EINVAL;
@@ -609,13 +609,36 @@ __pthread_mutex_clocklock (pthread_mutex_t *mutex,
   LIBC_PROBE (mutex_clocklock_entry, 3, mutex, clockid, abstime);
   return __pthread_mutex_clocklock_common (mutex, clockid, abstime);
 }
+
+#if __TIMESIZE != 64
+libc_hidden_def (__pthread_mutex_clocklock64)
+int
+__pthread_mutex_clocklock (pthread_mutex_t *mutex,
+                           clockid_t clockid,
+                           const struct timespec *abstime)
+{
+  struct __timespec64 ts64 = valid_timespec_to_timespec64 (*abstime);
+  return __pthread_mutex_clocklock64 (mutex, clockid, &ts64);
+}
+#endif
 weak_alias (__pthread_mutex_clocklock, pthread_mutex_clocklock)
 
 int
-__pthread_mutex_timedlock (pthread_mutex_t *mutex,
-			   const struct timespec *abstime)
+__pthread_mutex_timedlock64 (pthread_mutex_t *mutex,
+                             const struct __timespec64 *abstime)
 {
   LIBC_PROBE (mutex_timedlock_entry, 2, mutex, abstime);
   return __pthread_mutex_clocklock_common (mutex, CLOCK_REALTIME, abstime);
 }
+
+#if __TIMESIZE != 64
+libc_hidden_def (__pthread_mutex_timedlock64)
+int
+__pthread_mutex_timedlock (pthread_mutex_t *mutex,
+                           const struct timespec *abstime)
+{
+  struct __timespec64 ts64 = valid_timespec_to_timespec64 (*abstime);
+  return __pthread_mutex_timedlock64 (mutex, &ts64);
+}
+#endif
 weak_alias (__pthread_mutex_timedlock, pthread_mutex_timedlock)

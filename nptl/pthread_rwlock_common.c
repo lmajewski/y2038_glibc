@@ -280,7 +280,7 @@ __pthread_rwlock_rdunlock (pthread_rwlock_t *rwlock)
 static __always_inline int
 __pthread_rwlock_rdlock_full (pthread_rwlock_t *rwlock,
     clockid_t clockid,
-    const struct timespec *abstime)
+    const struct __timespec64 *abstime)
 {
   unsigned int r;
 
@@ -587,7 +587,7 @@ __pthread_rwlock_wrunlock (pthread_rwlock_t *rwlock)
 static __always_inline int
 __pthread_rwlock_wrlock_full (pthread_rwlock_t *rwlock,
     clockid_t clockid,
-    const struct timespec *abstime)
+    const struct __timespec64 *abstime)
 {
   /* Make sure any passed in clockid and timeout value are valid.  Note that
      the previous implementation assumed that this check *must* not be

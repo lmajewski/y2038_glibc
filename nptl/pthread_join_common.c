@@ -37,7 +37,8 @@ cleanup (void *arg)
    afterwards.  The kernel up to version 3.16.3 does not use the private futex
    operations for futex wake-up when the clone terminates.  */
 static int
-clockwait_tid (pid_t *tidp, clockid_t clockid, const struct timespec *abstime)
+clockwait_tid (pid_t *tidp, clockid_t clockid,
+               const struct __timespec64 *abstime)
 {
   pid_t tid;
 
@@ -47,11 +48,11 @@ clockwait_tid (pid_t *tidp, clockid_t clockid, const struct timespec *abstime)
   /* Repeat until thread terminated.  */
   while ((tid = *tidp) != 0)
     {
-      struct timespec rt;
+      struct __timespec64 rt;
 
       /* Get the current time. This can only fail if clockid is
          invalid. */
-      if (__glibc_unlikely (__clock_gettime (clockid, &rt)))
+      if (__glibc_unlikely (__clock_gettime64 (clockid, &rt)))
         return EINVAL;
 
       /* Compute relative timeout.  */
@@ -80,8 +81,8 @@ clockwait_tid (pid_t *tidp, clockid_t clockid, const struct timespec *abstime)
 
 int
 __pthread_clockjoin_ex (pthread_t threadid, void **thread_return,
-			clockid_t clockid,
-			const struct timespec *abstime, bool block)
+                        clockid_t clockid,
+                        const struct __timespec64 *abstime, bool block)
 {
   struct pthread *pd = (struct pthread *) threadid;
 

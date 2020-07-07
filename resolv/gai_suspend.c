@@ -26,8 +26,8 @@
 
 
 int
-gai_suspend (const struct gaicb *const list[], int ent,
-	     const struct timespec *timeout)
+__gai_suspend_common (const struct gaicb *const list[], int ent,
+		      const struct __timespec64 *timeout)
 {
   struct waitlist waitlist[ent];
   struct requestlist *requestlist[ent];
@@ -91,10 +91,10 @@ gai_suspend (const struct gaicb *const list[], int ent,
 	{
 	  /* We have to convert the relative timeout value into an
 	     absolute time value with pthread_cond_timedwait expects.  */
-	  struct timespec now;
-	  struct timespec abstime;
+	  struct __timespec64 now;
+	  struct __timespec64 abstime;
 
-          __clock_gettime (CLOCK_REALTIME, &now);
+	  __clock_gettime64 (CLOCK_REALTIME, &now);
 	  abstime.tv_nsec = timeout->tv_nsec + now.tv_nsec;
 	  abstime.tv_sec = timeout->tv_sec + now.tv_sec;
 	  if (abstime.tv_nsec >= 1000000000)
@@ -155,3 +155,26 @@ gai_suspend (const struct gaicb *const list[], int ent,
 
   return result;
 }
+
+int
+__gai_suspend64 (const struct gaicb *const list[], int ent,
+		 const struct __timespec64 *timeout)
+{
+  return __gai_suspend_common (list, ent, timeout);
+}
+
+#if __TIMESIZE != 64
+libc_hidden_def (__gai_suspend64)
+
+int
+__gai_suspend (const struct gaicb *const list[], int ent,
+	       const struct timespec *timeout)
+{
+  struct __timespec64 ts64;
+  if (timeout != NULL)
+    ts64 = valid_timespec_to_timespec64 (*timeout);
+
+  return __gai_suspend64 (list, ent, timeout != NULL ? &ts64 : NULL);
+}
+#endif
+weak_alias (__gai_suspend, gai_suspend)

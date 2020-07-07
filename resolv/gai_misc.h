@@ -97,4 +97,11 @@ extern int __gai_notify_only (struct sigevent *sigev, pid_t caller_pid)
 /* Send the signal.  */
 extern int __gai_sigqueue (int sig, const union sigval val, pid_t caller_pid);
 
+# if __TIMESIZE == 64
+#  define __gai_suspend64 __gai_suspend
+# else
+extern int __gai_suspend64 (const struct gaicb *const list[], int ent,
+                            const struct __timespec64 *timeout);
+libc_hidden_proto (__gai_suspend64)
+# endif
 #endif /* gai_misc.h */

@@ -104,7 +104,7 @@ __sem_wait_cleanup (void *arg)
 static int
 __attribute__ ((noinline))
 do_futex_wait (struct new_sem *sem, clockid_t clockid,
-	       const struct timespec *abstime)
+	       const struct __timespec64 *abstime)
 {
   int err;
 
@@ -163,7 +163,7 @@ __new_sem_wait_fast (struct new_sem *sem, int definitive_result)
 static int
 __attribute__ ((noinline))
 __new_sem_wait_slow (struct new_sem *sem, clockid_t clockid,
-		     const struct timespec *abstime)
+		     const struct __timespec64 *abstime)
 {
   int err = 0;
 

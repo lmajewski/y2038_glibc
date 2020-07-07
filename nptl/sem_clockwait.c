@@ -20,10 +20,11 @@
 
 #include <time.h>
 #include "sem_waitcommon.c"
+#include "semaphoreP.h"
 
 int
-sem_clockwait (sem_t *sem, clockid_t clockid,
-	       const struct timespec *abstime)
+__sem_clockwait64 (sem_t *sem, clockid_t clockid,
+		   const struct __timespec64 *abstime)
 {
   /* Check that supplied clockid is one we support, even if we don't end up
      waiting.  */
@@ -44,3 +45,19 @@ sem_clockwait (sem_t *sem, clockid_t clockid,
   else
     return __new_sem_wait_slow ((struct new_sem *) sem, clockid, abstime);
 }
+
+#if __TIMESIZE != 64
+libc_hidden_def (__sem_timedwait64)
+
+int
+__sem_clockwait (sem_t *sem, clockid_t clockid,
+		 const struct timespec *abstime)
+{
+  struct __timespec64 ts64;
+  if (abstime != NULL)
+    ts64 = valid_timespec_to_timespec64 (*abstime);
+
+  return __sem_clockwait64 (sem, clockid, abstime != NULL ? &ts64 : NULL);
+}
+#endif
+weak_alias (__sem_clockwait, sem_clockwait)

@@ -26,9 +26,9 @@
 
 int
 __lll_clocklock_wait (int *futex, int val, clockid_t clockid,
-		      const struct timespec *abstime, int private)
+		      const struct __timespec64 *abstime, int private)
 {
-  struct timespec ts, *tsp = NULL;
+  struct __timespec64 ts, *tsp = NULL;
 
   if (abstime != NULL)
     {
@@ -37,7 +37,7 @@ __lll_clocklock_wait (int *futex, int val, clockid_t clockid,
         return EINVAL;
 
       /* Get the current time. This can only fail if clockid is not valid.  */
-      if (__glibc_unlikely (__clock_gettime (clockid, &ts) != 0))
+      if (__glibc_unlikely (__clock_gettime64 (clockid, &ts) != 0))
         return EINVAL;
 
       /* Compute relative timeout.  */

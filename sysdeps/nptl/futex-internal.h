@@ -211,7 +211,7 @@ futex_wait_cancelable (unsigned int *futex_word, unsigned int expected,
    */
 static __always_inline int
 futex_reltimed_wait (unsigned int* futex_word, unsigned int expected,
-		     const struct timespec* reltime, int private)
+		     const struct __timespec64* reltime, int private)
 {
   int err = lll_futex_timed_wait (futex_word, expected, reltime, private);
   switch (err)
@@ -237,7 +237,7 @@ futex_reltimed_wait (unsigned int* futex_word, unsigned int expected,
 static __always_inline int
 futex_reltimed_wait_cancelable (unsigned int* futex_word,
 				unsigned int expected,
-			        const struct timespec* reltime, int private)
+			        const struct __timespec64* reltime, int private)
 {
   int oldtype;
   oldtype = LIBC_CANCEL_ASYNC ();
@@ -275,7 +275,7 @@ futex_abstimed_supported_clockid (clockid_t clockid)
 static __always_inline int
 futex_abstimed_wait (unsigned int* futex_word, unsigned int expected,
 		     clockid_t clockid,
-		     const struct timespec* abstime, int private)
+		     const struct __timespec64* abstime, int private)
 {
   /* Work around the fact that the kernel rejects negative timeout values
      despite them being valid.  */
@@ -309,7 +309,7 @@ static __always_inline int
 futex_abstimed_wait_cancelable (unsigned int* futex_word,
 				unsigned int expected,
 				clockid_t clockid,
-			        const struct timespec* abstime, int private)
+			        const struct __timespec64* abstime, int private)
 {
   /* Work around the fact that the kernel rejects negative timeout values
      despite them being valid.  */
@@ -406,7 +406,7 @@ futex_wake (unsigned int* futex_word, int processes_to_wake, int private)
      - ETIMEDOUT if the ABSTIME expires.
 */
 static __always_inline int
-futex_lock_pi (unsigned int *futex_word, const struct timespec *abstime,
+futex_lock_pi (unsigned int *futex_word, const struct __timespec64 *abstime,
 	       int private)
 {
   int err = lll_futex_timed_lock_pi (futex_word, abstime, private);

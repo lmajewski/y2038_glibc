@@ -94,7 +94,7 @@ cleanup (void *arg)
 #ifdef DONT_NEED_AIO_MISC_COND
 static int
 __attribute__ ((noinline))
-do_aio_misc_wait (unsigned int *cntr, const struct timespec *timeout)
+do_aio_misc_wait (unsigned int *cntr, const struct __timespec64 *timeout)
 {
   int result = 0;
 
@@ -104,9 +104,9 @@ do_aio_misc_wait (unsigned int *cntr, const struct timespec *timeout)
 }
 #endif
 
-int
-aio_suspend (const struct aiocb *const list[], int nent,
-	     const struct timespec *timeout)
+static int
+__aio_suspend_common (const struct aiocb *const list[], int nent,
+                      const struct __timespec64 *timeout)
 {
   if (__glibc_unlikely (nent < 0))
     {
@@ -183,10 +183,10 @@ aio_suspend (const struct aiocb *const list[], int nent,
 	{
 	  /* We have to convert the relative timeout value into an
 	     absolute time value with pthread_cond_timedwait expects.  */
-	  struct timespec now;
-	  struct timespec abstime;
+	  struct __timespec64 now;
+	  struct __timespec64 abstime;
 
-	  __clock_gettime (CLOCK_REALTIME, &now);
+	  __clock_gettime64 (CLOCK_REALTIME, &now);
 	  abstime.tv_nsec = timeout->tv_nsec + now.tv_nsec;
 	  abstime.tv_sec = timeout->tv_sec + now.tv_sec;
 	  if (abstime.tv_nsec >= 1000000000)
@@ -250,4 +250,26 @@ aio_suspend (const struct aiocb *const list[], int nent,
   return result;
 }
 
+int
+__aio_suspend64 (const struct aiocb *const list[], int nent,
+                 const struct __timespec64 *timeout)
+{
+  return __aio_suspend_common (list, nent, timeout);
+}
+
+#if __TIMESIZE != 64
+libc_hidden_def (__aio_suspend64)
+
+int
+__aio_suspend (const struct aiocb *const list[], int nent,
+               const struct timespec *timeout)
+{
+  struct __timespec64 ts64;
+  if (timeout != NULL)
+    ts64 = valid_timespec_to_timespec64 (*timeout);
+
+  return __aio_suspend64 (list, nent, timeout != NULL ? &ts64 : NULL);
+}
+#endif
+weak_alias (__aio_suspend, aio_suspend)
 weak_alias (aio_suspend, aio_suspend64)

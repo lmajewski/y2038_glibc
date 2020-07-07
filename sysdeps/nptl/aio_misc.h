@@ -23,6 +23,7 @@
 #include <assert.h>
 #include <nptl/pthreadP.h>
 #include <futex-internal.h>
+#include <struct___timespec64.h>
 
 #define DONT_NEED_AIO_MISC_COND	1
 
@@ -49,7 +50,7 @@
 		(unsigned int *) futexaddr, oldval, timeout, FUTEX_PRIVATE);  \
 	    else							      \
 	      status = futex_reltimed_wait ((unsigned int *) futexaddr,	      \
-		oldval, timeout, FUTEX_PRIVATE);	      		      \
+		oldval, timeout, FUTEX_PRIVATE);			      \
 	    if (status != EAGAIN)					      \
 	      break;							      \
 									      \
@@ -69,3 +70,11 @@
   } while (0)
 
 #include_next <aio_misc.h>
+
+#if __TIMESIZE == 64
+# define __aio_suspend64 __aio_suspend
+#else
+extern int __aio_suspend64 (const struct aiocb *const list[], int nent,
+			    const struct __timespec64 *timeout);
+libc_hidden_proto (__aio_suspend64)
+#endif

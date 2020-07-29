@@ -1,5 +1,5 @@
-/* Copyright (C) 2008-2021 Free Software Foundation, Inc.
-   Contributed by Andreas Krebbel <Andreas.Krebbel@de.ibm.com>.
+/* Write utmp and wtmp entries, 32-bit time compat version.
+   Copyright (C) 2008-2021 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -17,14 +17,22 @@
    <https://www.gnu.org/licenses/>.  */
 
 #include <utmp.h>
-#include <utmpx.h>
+#include <utmp-compat.h>
+#include <shlib-compat.h>
 
-#include "utmp-compat.h"
+#include "utmp32.h"
+#include "utmp-convert.h"
 
-#undef weak_alias
-#define weak_alias(n,a)
-#define pututxline __pututxline
-#include "login/pututxline.c"
-#undef pututxline
+#if SHLIB_COMPAT(libutil, GLIBC_2_0, UTMP_COMPAT_BASE)
+/* Write the given entry into utmp and wtmp.  */
+void
+login32 (const struct utmp32 *entry)
+{
+  struct utmp in64;
 
-default_symbol_version (__pututxline, pututxline, UTMP_COMPAT_BASE);
+  __utmp_convert32to64 (entry, &in64);
+  __login (&in64);
+}
+
+compat_symbol (libutil, login32, login, GLIBC_2_0);
+#endif

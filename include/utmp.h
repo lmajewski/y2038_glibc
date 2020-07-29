@@ -9,7 +9,7 @@ libc_hidden_proto (__updwtmp)
 extern int __utmpname (const char *__file) attribute_hidden;
 extern struct utmp *__getutent (void);
 libc_hidden_proto (__getutent)
-extern void __setutent (void) attribute_hidden;
+extern void __setutent (void);
 extern void __endutent (void) attribute_hidden;
 extern struct utmp *__getutid (const struct utmp *__id);
 libc_hidden_proto (__getutid)
@@ -25,6 +25,9 @@ libc_hidden_proto (__getutid_r)
 extern int __getutline_r (const struct utmp *__line,
 			  struct utmp *__buffer, struct utmp **__result);
 libc_hidden_proto (__getutline_r)
+
+extern void __login (const struct utmp *ut);
+hidden_proto (__login)
 
 libutil_hidden_proto (login_tty)
 

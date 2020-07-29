@@ -45,10 +45,34 @@ libc {
     __getlogin_r_chk;
     __ptsname_r_chk;
   }
+  GLIBC_2.34 {
+    getutent;
+    getutent_r;
+    getutid;
+    getutid_r;
+    getutline;
+    getutline_r;
+    getutmp;
+    getutmpx;
+    getutxent;
+    getutxid;
+    getutxline;
+    pututline;
+    pututxline;
+    updwtmp;
+    updwtmpx;
+  }
+  GLIBC_PRIVATE {
+    # Used on compat login from libutil.
+    __utmp_convert32to64;
+  }
 }
 
 libutil {
   GLIBC_2.0 {
     forkpty; login; login_tty; logout; logwtmp; openpty;
+  }
+  GLIBC_2.34 {
+    login;
   }
 }

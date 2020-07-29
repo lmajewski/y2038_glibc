@@ -16,17 +16,23 @@
    License along with the GNU C Library; if not, see
    <https://www.gnu.org/licenses/>.  */
 
-#include <stdlib.h>
-#include <utmp.h>
 
-#include "utmp-compat.h"
+/* This file provides functions converting between the 32 and 64 bit
+   struct utmp variants.  */
 
-#if defined SHARED
-# undef weak_alias
-# define weak_alias(n,a)
-#endif
-#include "login/getutline.c"
+#ifndef _UTMP_CONVERT_H
+#define _UTMP_CONVERT_H 1
 
-#if defined SHARED
-default_symbol_version (__getutline, getutline, UTMP_COMPAT_BASE);
-#endif
+#include <utmp32.h>
+
+/* Convert the 64 bit struct utmp value in FROM to the 32 bit version
+   returned in TO.  */
+void __utmp_convert64to32 (const struct utmp *from, struct utmp32 *to)
+  attribute_hidden;
+
+/* Convert the 32 bit struct utmp value in FROM to the 64 bit version
+   returned in TO.  */
+void __utmp_convert32to64 (const struct utmp32 *from, struct utmp *to);
+libc_hidden_proto (__utmp_convert32to64);
+
+#endif /* utmp-convert.h */

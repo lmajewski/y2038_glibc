@@ -47,5 +47,14 @@ struct utmp32
   char __glibc_reserved[20];		/* Reserved for future use.  */
 };
 
+int __getutid32_r (const struct utmp32 *, struct utmp32 *, struct utmp32 **);
+struct utmp32 *__getutid32 (const struct utmp32 *);
+int __getutline32_r (const struct utmp32 *, struct utmp32 *,
+		     struct utmp32 **);
+struct utmp32 *__getutline32 (const struct utmp32 *line);
+struct utmp32 *__pututline32 (const struct utmp32 *line);
+int __getutent32_r (struct utmp32 *, struct utmp32 **);
+struct utmp32 *__getutent32 (void);
+void __updwtmp32 (const char *wtmp_file, const struct utmp32 *utmp);
 
 #endif  /* utmp32.h  */

@@ -24,6 +24,7 @@
 #include <stdlib.h>
 #include <utmp.h>
 #include <shlib-compat.h>
+#include <utmp-compat.h>
 
 /* Return the result of ttyname in the buffer pointed to by TTY, which should
    be of length BUF_LEN.  If it is too long to fit in this buffer, a
@@ -137,9 +138,9 @@ __login (const struct utmp *ut)
   /* Update the WTMP file.  Here we have to add a new entry.  */
   __updwtmp (_PATH_WTMP, &copy);
 }
-versioned_symbol (libc, __login, login, GLIBC_2_34);
-libc_hidden_ver (__login, login)
+libc_hidden_def (__login)
+versioned_symbol (libc, __login, login, UTMP_COMPAT_BASE);
 
-#if OTHER_SHLIB_COMPAT (libutil, GLIBC_2_0, GLIBC_2_34)
+#if OTHER_SHLIB_COMPAT (libutil, GLIBC_2_0, UTMP_COMPAT_BASE)
 compat_symbol (libutil, __login, login, GLIBC_2_0);
 #endif

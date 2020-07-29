@@ -19,9 +19,8 @@
 #ifndef _UTMP_PATH_H
 #define _UTMP_PATH_H 1
 
-#include <string.h>
 #include <unistd.h>
-
+#include <string.h>
 
 /* The function returns the utmp database for 32-bit utmp{x} entries based
    on FILE_NAME:

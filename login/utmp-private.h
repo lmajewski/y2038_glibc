@@ -22,22 +22,42 @@
 #define _UTMP_PRIVATE_H	1
 
 #include <utmp.h>
+#include <utmp32.h>
+#include <sys/param.h>
 #include <libc-lock.h>
 
 /* These functions check for initialization, but not perform any
    locking.  */
-int __libc_setutent (void) attribute_hidden;
+void __libc_setutent (void) attribute_hidden;
+void __libc_endutent (void) attribute_hidden;
+
 int __libc_getutent_r (struct utmp *, struct utmp **) attribute_hidden;
 int __libc_getutid_r (const struct utmp *, struct utmp *, struct utmp **)
   attribute_hidden;
 int __libc_getutline_r (const struct utmp *, struct utmp *, struct utmp **)
   attribute_hidden;
 struct utmp *__libc_pututline (const struct utmp *) attribute_hidden;
-void __libc_endutent (void) attribute_hidden;
 int __libc_updwtmp (const char *, const struct utmp *) attribute_hidden;
+
+void __libc_setutent32 (void) attribute_hidden;
+int __libc_getutent32_r (struct utmp32 *, struct utmp32 **) attribute_hidden;
+int __libc_getutid32_r (const struct utmp32 *, struct utmp32 *,
+			struct utmp32 **) attribute_hidden;
+int __libc_getutline32_r (const struct utmp32 *, struct utmp32 *,
+			  struct utmp32 **) attribute_hidden;
+struct utmp32 *__libc_pututline32 (const struct utmp32 *) attribute_hidden;
+int __libc_updwtmp32 (const char *, const struct utmp32 *) attribute_hidden;
 
 /* Current file name.  */
 extern const char *__libc_utmp_file_name attribute_hidden;
+
+enum __libc_utmpname_mode_t
+{
+  UTMPNAME_TIME64,
+  UTMPNAME_TIME32,
+  UTMPNAME_UNDEF
+};
+extern enum __libc_utmpname_mode_t __libc_utmpname_mode attribute_hidden;
 
 /* Locks access to the global data.  */
 __libc_lock_define (extern, __libc_utmp_lock attribute_hidden)

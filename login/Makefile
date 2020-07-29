@@ -31,7 +31,8 @@ headers	:= utmp.h bits/utmp.h lastlog.h pty.h \
 routines := getlogin getlogin_r setlogin getlogin_r_chk \
 	    getutent getutent_r getutid getutline getutid_r getutline_r \
 	    utmp_file utmpname updwtmp getpt grantpt unlockpt ptsname \
-	    ptsname_r_chk login login_tty logout logwtmp openpty forkpty
+	    ptsname_r_chk login login_tty logout logwtmp openpty forkpty \
+	    utmp32 utmpx32 utmp-convert
 
 CFLAGS-grantpt.c += -DLIBEXECDIR='"$(libexecdir)"'
 
@@ -55,6 +56,9 @@ extra-libs      := libutil
 extra-libs-others := $(extra-libs)
 libutil-routines := libutil-compat
 libutil-shared-only-routines := libutil-compat
+
+tests-container-internal := tst-utmp32
+tests-container := tst-utmp-default
 
 # Pretend that libutil.so is a linker script, so that the symbolic
 # link is not installed.

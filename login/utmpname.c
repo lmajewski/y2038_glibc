@@ -29,6 +29,7 @@ static const char default_file_name[] = _PATH_UTMP;
 
 /* Current file name.  */
 const char *__libc_utmp_file_name = (const char *) default_file_name;
+enum __libc_utmpname_mode_t __libc_utmpname_mode = UTMPNAME_TIME64;
 
 /* We have to use the lock in getutent_r.c.  */
 __libc_lock_define (extern, __libc_utmp_lock attribute_hidden)
@@ -65,6 +66,13 @@ __utmpname (const char *file)
 	  __libc_utmp_file_name = file_name;
 	}
     }
+
+  if (strcmp (__libc_utmp_file_name, _PATH_UTMP) == 0)
+    __libc_utmpname_mode = UTMPNAME_TIME64;
+  else if (strcmp (__libc_utmp_file_name, _PATH_UTMP_BASE) == 0)
+    __libc_utmpname_mode = UTMPNAME_TIME32;
+  else
+    __libc_utmpname_mode = UTMPNAME_UNDEF;
 
   result = 0;
 

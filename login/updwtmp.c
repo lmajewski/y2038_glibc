@@ -19,16 +19,31 @@
 #include <utmp.h>
 #include <string.h>
 #include <unistd.h>
-
-#include "utmp-private.h"
+#include <utmp-private.h>
 #include <utmp-path.h>
+#include <utmp-compat.h>
+#include <utmp-convert.h>
+#include <shlib-compat.h>
 
 void
 __updwtmp (const char *wtmp_file, const struct utmp *utmp)
 {
-  const char *file_name = utmp_file_name_time32 (wtmp_file);
-
-  __libc_updwtmp (file_name, utmp);
+#if SHLIB_COMPAT(libc, GLIBC_2_0, UTMP_COMPAT_BASE)
+  if (strcmp (wtmp_file, _PATH_WTMP_BASE) == 0
+      || strcmp (wtmp_file, _PATH_WTMP_BASE) == 0)
+    {
+      const char *file_name = utmp_file_name_time32 (wtmp_file);
+      struct utmp32 in32;
+      __utmp_convert64to32 (utmp, &in32);
+      __libc_updwtmp32 (file_name, &in32);
+    }
+  else
+#endif
+    __libc_updwtmp (wtmp_file, utmp);
 }
 libc_hidden_def (__updwtmp)
+#if SHLIB_COMPAT(libc, GLIBC_2_0, UTMP_COMPAT_BASE)
+versioned_symbol (libc, __updwtmp, updwtmp, UTMP_COMPAT_BASE);
+#else
 weak_alias (__updwtmp, updwtmp)
+#endif

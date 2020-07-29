@@ -1,5 +1,5 @@
-/* Copyright (C) 2008-2021 Free Software Foundation, Inc.
-   Contributed by Andreas Krebbel <Andreas.Krebbel@de.ibm.com>.
+/* Converto to/from 64-bit to 32-bit time_t utmp/utmpx struct.
+   Copyright (C) 2008-2021 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -16,71 +16,42 @@
    License along with the GNU C Library; if not, see
    <https://www.gnu.org/licenses/>.  */
 
-
-/* This file provides functions converting between the 32 and 64 bit
-   struct utmp variants.  */
-
-#ifndef _UTMP_CONVERT_H
-#define _UTMP_CONVERT_H 1
-
 #include <string.h>
-
-#include "utmp32.h"
+#include <utmp-convert.h>
 
 /* Convert the 64 bit struct utmp value in FROM to the 32 bit version
    returned in TO.  */
-static inline void
-utmp_convert64to32 (const struct utmp *from, struct utmp32 *to)
+void
+__utmp_convert64to32 (const struct utmp *from, struct utmp32 *to)
 {
-#if _HAVE_UT_TYPE - 0
   to->ut_type = from->ut_type;
-#endif
-#if _HAVE_UT_PID - 0
   to->ut_pid = from->ut_pid;
-#endif
   memcpy (to->ut_line, from->ut_line, UT_LINESIZE);
   memcpy (to->ut_user, from->ut_user, UT_NAMESIZE);
-#if _HAVE_UT_ID - 0
   memcpy (to->ut_id, from->ut_id, 4);
-#endif
-#if _HAVE_UT_HOST - 0
   memcpy (to->ut_host, from->ut_host, UT_HOSTSIZE);
-#endif
   to->ut_exit = from->ut_exit;
-  to->ut_session = (int32_t) from->ut_session;
-#if _HAVE_UT_TV - 0
-  to->ut_tv.tv_sec = (int32_t) from->ut_tv.tv_sec;
-  to->ut_tv.tv_usec = (int32_t) from->ut_tv.tv_usec;
-#endif
+  to->ut_session = from->ut_session;
+  to->ut_tv.tv_sec = from->ut_tv.tv_sec;
+  to->ut_tv.tv_usec = from->ut_tv.tv_usec;
   memcpy (to->ut_addr_v6, from->ut_addr_v6, 4 * 4);
 }
 
 /* Convert the 32 bit struct utmp value in FROM to the 64 bit version
    returned in TO.  */
-static inline void
-utmp_convert32to64 (const struct utmp32 *from, struct utmp *to)
+void
+__utmp_convert32to64 (const struct utmp32 *from, struct utmp *to)
 {
-#if _HAVE_UT_TYPE - 0
   to->ut_type = from->ut_type;
-#endif
-#if _HAVE_UT_PID - 0
   to->ut_pid = from->ut_pid;
-#endif
   memcpy (to->ut_line, from->ut_line, UT_LINESIZE);
   memcpy (to->ut_user, from->ut_user, UT_NAMESIZE);
-#if _HAVE_UT_ID - 0
   memcpy (to->ut_id, from->ut_id, 4);
-#endif
-#if _HAVE_UT_HOST - 0
   memcpy (to->ut_host, from->ut_host, UT_HOSTSIZE);
-#endif
   to->ut_exit = from->ut_exit;
-  to->ut_session = (int64_t) from->ut_session;
-#if _HAVE_UT_TV - 0
-  to->ut_tv.tv_sec = (int64_t) from->ut_tv.tv_sec;
-  to->ut_tv.tv_usec = (int64_t) from->ut_tv.tv_usec;
-#endif
-  memcpy (to->ut_addr_v6, from->ut_addr_v6, 4 * 4);
+  to->ut_session = from->ut_session;
+  to->ut_tv.tv_sec = from->ut_tv.tv_sec;
+  to->ut_tv.tv_usec = from->ut_tv.tv_usec;
+  memcpy (to->ut_addr_v6, from->ut_addr_v6, sizeof (to->ut_addr_v6));
 }
-
-#endif /* utmp-convert.h */
+libc_hidden_def (__utmp_convert32to64)

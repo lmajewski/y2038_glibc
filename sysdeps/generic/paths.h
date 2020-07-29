@@ -61,11 +61,12 @@
 #define	_PATH_TTY	"/dev/tty"
 #define	_PATH_UNIX	"/vmunix"
 #define	_PATH_UTMP_BASE	"/var/run/utmp"
-#define	_PATH_UTMP	_PATH_UTMP_BASE
-#define	_PATH_UTMP_DB	_PATH_UTMP_BASE ".db"
+#define _PATH_WUTMP_VER ".v2"
+#define	_PATH_UTMP	_PATH_UTMP_BASE _PATH_WUTMP_VER
+#define	_PATH_UTMP_DB	_PATH_UTMP_BASE _PATH_WUTMP_VER ".db"
 #define	_PATH_VI	"/usr/bin/vi"
 #define	_PATH_WTMP_BASE	"/var/log/wtmp"
-#define	_PATH_WTMP	_PATH_WTMP_BASE
+#define	_PATH_WTMP	_PATH_WTMP_BASE _PATH_WUTMP_VER
 
 /* Provide trailing slash, since mostly used for building pathnames. */
 #define	_PATH_DEV	"/dev/"

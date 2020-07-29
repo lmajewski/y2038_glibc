@@ -12,7 +12,7 @@ extern struct utmp *__getutent (void);
 libc_hidden_proto (__getutent)
 extern void __setutent (void);
 libc_hidden_proto (__setutent)
-extern void __endutent (void);
+extern void __endutent (void) attribute_hidden;
 libc_hidden_proto (__endutent)
 extern struct utmp *__getutid (const struct utmp *__id);
 libc_hidden_proto (__getutid)
@@ -33,6 +33,8 @@ libc_hidden_proto (login)
 libc_hidden_proto (login_tty)
 libc_hidden_proto (logout)
 libc_hidden_proto (logwtmp)
+extern void __login (const struct utmp *ut);
+hidden_proto (__login)
 
 # endif /* !_ISOMAC */
 #endif

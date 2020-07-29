@@ -1,0 +1,10 @@
+# We create empty UTMP_FILE and WTMP_FILE
+mkdirp 0755 /var/run
+touch  0664 /var/run/utmp.v2
+touch  0664 /var/run/wtmp.v2
+# Same for the old files as well
+touch  0664 /var/run/utmp
+touch  0664 /var/run/wtmp
+
+# Must run localedef as root to write into default paths.
+su

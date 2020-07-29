@@ -36,11 +36,11 @@ struct utmpx32
   char ut_host[__UT_HOSTSIZE];	/* Hostname for remote login.  */
   struct __exit_status ut_exit;	/* Exit status of a process marked
 				   as DEAD_PROCESS.  */
-  __int64_t ut_session;		/* Session ID, used for windowing.  */
+  __int32_t ut_session;		/* Session ID, used for windowing.  */
   struct
   {
-    __int64_t tv_sec;		/* Seconds.  */
-    __int64_t tv_usec;		/* Microseconds.  */
+    __int32_t tv_sec;		/* Seconds.  */
+    __int32_t tv_usec;		/* Microseconds.  */
   } ut_tv;			/* Time entry was made.  */
 
   __int32_t ut_addr_v6[4];	/* Internet address of remote host.  */

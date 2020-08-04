@@ -326,7 +326,7 @@ sysdep_routines += xstatconv internal_statvfs \
 		   close_nocancel fcntl_nocancel \
 		   open_nocancel open64_nocancel \
 		   openat_nocancel openat64_nocancel \
-		   read_nocancel pread64_nocancel \
+		   read_nocancel pread64_nocancel pwrite64_nocancel \
 		   write_nocancel statx_cp stat_t64_cp
 
 sysdep_headers += bits/fcntl-linux.h

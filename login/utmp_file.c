@@ -32,7 +32,7 @@
 #include <not-cancel.h>
 
 #include "utmp-private.h"
-#include "utmp-equal.h"
+#include <utmp-path.h>
 
 
 /* Descriptor for the file and position.  */
@@ -60,7 +60,21 @@ matches_last_entry (const struct utmp *data)
     return data->ut_type == last_entry.ut_type;
   else
     /* For the process-related entries, a full match is needed.  */
-    return __utmp_equal (&last_entry, data);
+    return (data->ut_type == INIT_PROCESS
+	    || data->ut_type == LOGIN_PROCESS
+	    || data->ut_type == USER_PROCESS
+	    || data->ut_type == DEAD_PROCESS)
+      && (last_entry.ut_type == INIT_PROCESS
+	  || last_entry.ut_type == LOGIN_PROCESS
+	  || last_entry.ut_type == USER_PROCESS
+	  || last_entry.ut_type == DEAD_PROCESS)
+      && (data->ut_id[0] && last_entry.ut_id[0]
+	  ? strncmp (data->ut_id, last_entry.ut_id,
+		     sizeof last_entry.ut_id)
+	    == 0
+	  : (strncmp (data->ut_line, last_entry.ut_line,
+		      sizeof last_entry.ut_line)
+	     == 0));
 }
 
 /* Locking timeout.  */
@@ -129,10 +143,6 @@ file_unlock (int fd)
   __fcntl64_nocancel (fd, F_SETLKW, &fl);
 }
 
-#ifndef TRANSFORM_UTMP_FILE_NAME
-# define TRANSFORM_UTMP_FILE_NAME(file_name) (file_name)
-#endif
-
 int
 __libc_setutent (void)
 {
@@ -140,7 +150,7 @@ __libc_setutent (void)
     {
       const char *file_name;
 
-      file_name = TRANSFORM_UTMP_FILE_NAME (__libc_utmp_file_name);
+      file_name = utmp_file_name_time32 (__libc_utmp_file_name);
 
       file_writable = false;
       file_fd = __open_nocancel
@@ -353,7 +363,7 @@ __libc_pututline (const struct utmp *data)
   if (! file_writable)
     {
       /* We must make the file descriptor writable before going on.  */
-      const char *file_name = TRANSFORM_UTMP_FILE_NAME (__libc_utmp_file_name);
+      const char *file_name = utmp_file_name_time32 (__libc_utmp_file_name);
 
       int new_fd = __open_nocancel
 	(file_name, O_RDWR | O_LARGEFILE | O_CLOEXEC);

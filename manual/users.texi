@@ -1234,7 +1234,7 @@ over again.
 @c   pututline_unknown @mtasurace:utent @acsfd
 @c    setutent_unknown dup @mtasurace:utent @acsfd
 @c   pututline_file @mtascusig:ALRM @mtascutimer @acsfd
-@c    TRANSFORM_UTMP_FILE_NAME ok
+@c    utmp_file_name_time32 ok
 @c     strcmp dup ok
 @c     acesss dup ok
 @c    open_not_cancel_2 dup @acsfd
@@ -1427,7 +1427,7 @@ the following function:
 @standards{SVID, utmp.h}
 @safety{@prelim{}@mtunsafe{@mtascusig{:ALRM} @mtascutimer{}}@asunsafe{}@acunsafe{@acsfd{}}}
 @c updwtmp @mtascusig:ALRM @mtascutimer @acsfd
-@c  TRANSFORM_UTMP_FILE_NAME dup ok
+@c  utmp_file_name_time32 dup ok
 @c  *libc_utmp_file_functions->updwtmp = updwtmp_file @mtascusig:ALRM @mtascutimer @acsfd
 @c   open_not_cancel_2 dup @acsfd
 @c   LOCK_FILE dup @mtascusig:ALRM @mtascutimer

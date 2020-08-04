@@ -46,7 +46,8 @@
 #define	_PATH_DRUM	"/dev/drum"
 #define	_PATH_GSHADOW	"/etc/gshadow"
 #define	_PATH_KMEM	"/dev/kmem"
-#define	_PATH_LASTLOG	"/var/log/lastlog"
+#define _PATH_LASTLOG_VER ".v2"
+#define	_PATH_LASTLOG	"/var/log/lastlog" _PATH_LASTLOG_VER
 #define	_PATH_MAILDIR	"/var/mail"
 #define	_PATH_MAN	"/usr/share/man"
 #define	_PATH_MEM	"/dev/mem"

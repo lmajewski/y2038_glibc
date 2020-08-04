@@ -57,6 +57,8 @@ libc {
     getutxent;
     getutxid;
     getutxline;
+    lastlog_read;
+    lastlog_write;
     pututline;
     pututxline;
     updwtmp;

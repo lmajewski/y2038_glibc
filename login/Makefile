@@ -31,7 +31,8 @@ headers	:= utmp.h bits/utmp.h lastlog.h pty.h \
 routines := getlogin getlogin_r setlogin getlogin_r_chk \
 	    getutent getutent_r getutid getutline getutid_r getutline_r \
 	    utmp_file utmpname updwtmp getpt grantpt unlockpt ptsname \
-	    ptsname_r_chk utmp32 utmpx32 utmp-convert
+	    ptsname_r_chk utmp32 utmpx32 utmp-convert \
+	    lastlog_read lastlog_write
 
 CFLAGS-grantpt.c += -DLIBEXECDIR='"$(libexecdir)"'
 
@@ -53,6 +54,7 @@ ifeq ($(have-GLIBC_2.33),yes)
 tests-container-internal := tst-utmp32
 tests-container := tst-utmp-default
 endif
+tests-container += tst-lastlog
 
 # Build the -lutil library with these extra functions.
 extra-libs      := libutil

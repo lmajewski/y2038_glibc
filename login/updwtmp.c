@@ -21,22 +21,12 @@
 #include <unistd.h>
 
 #include "utmp-private.h"
-
-#ifndef TRANSFORM_UTMP_FILE_NAME
-# define TRANSFORM_UTMP_FILE_NAME(file_name)	\
-  ((strcmp (file_name, _PATH_UTMP "x") == 0	\
-    && __access (_PATH_UTMP "x", F_OK) != 0)	\
-   ? _PATH_UTMP					\
-   : ((strcmp (file_name, _PATH_WTMP "x") == 0	\
-       && __access (_PATH_WTMP "x", F_OK) != 0)	\
-      ? _PATH_WTMP				\
-      : file_name))
-#endif
+#include <utmp-path.h>
 
 void
 __updwtmp (const char *wtmp_file, const struct utmp *utmp)
 {
-  const char *file_name = TRANSFORM_UTMP_FILE_NAME (wtmp_file);
+  const char *file_name = utmp_file_name_time32 (wtmp_file);
 
   __libc_updwtmp (file_name, utmp);
 }

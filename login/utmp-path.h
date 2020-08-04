@@ -1,6 +1,6 @@
-/* Copyright (C) 1998-2021 Free Software Foundation, Inc.
+/* Handle {u,w}tmp and {u,w}tmpx file name usage.
+   Copyright (C) 1998-2021 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
-   Contributed by Mark Kettenis <kettenis@phys.uva.nl>, 1998.
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -16,16 +16,26 @@
    License along with the GNU C Library; if not, see
    <https://www.gnu.org/licenses/>.  */
 
+#ifndef _UTMP_PATH_H
+#define _UTMP_PATH_H 1
+
 #include <string.h>
 #include <unistd.h>
 
-#define TRANSFORM_UTMP_FILE_NAME(file_name)	\
-  ((strcmp (file_name, _PATH_UTMP "x") == 0	\
-    && __access (_PATH_UTMP "x", F_OK) != 0)	\
-   ? _PATH_UTMP					\
-   : ((strcmp (file_name, _PATH_WTMP "x") == 0	\
-       && __access (_PATH_WTMP "x", F_OK) != 0)	\
-      ? _PATH_WTMP				\
-      : file_name))
+/* The function returns the utmp database for 32-bit utmp{x} entries based
+   on FILE_NAME.  If the argument ends with 'x' and the file does not
+   exits the default old utmp{x} name is returned instead.  */
+static inline const char *
+utmp_file_name_time32 (const char *file_name)
+{
+  if (strcmp (file_name, _PATH_UTMP_BASE "x") == 0
+      && __access (_PATH_UTMP_BASE "x", F_OK) != 0)
+    return _PATH_UTMP_BASE;
+  else if (strcmp (file_name, _PATH_WTMP_BASE "x") == 0
+	   && __access (_PATH_WTMP_BASE "x", F_OK) != 0)
+    return _PATH_UTMP_BASE;
 
-#include <login/utmp_file.c>
+  return file_name;
+}
+
+#endif /* _UTMP_PATH_H  */

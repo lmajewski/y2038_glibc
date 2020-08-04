@@ -91,6 +91,17 @@ extern int getutline_r (const struct utmp *__line,
 
 #endif	/* Use misc.  */
 
+#ifdef __USE_GNU
+/* Read the struct lastlog LL with UID from file FILE.  */
+extern ssize_t lastlog_read (const char *__file, uid_t __uid,
+			     struct lastlog *__ll)
+     __THROW __nonnull ((1, 3));
+/* Write the struct lastlog LL with UID from file FILE.  */
+extern ssize_t lastlog_write (const char *__file, uid_t __uid,
+			      const struct lastlog *__ll)
+     __THROW __nonnull ((1, 3));
+#endif
+
 __END_DECLS
 
 #endif /* utmp.h  */

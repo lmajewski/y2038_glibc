@@ -2257,6 +2257,8 @@ GLIBC_2.34 getutmpx F
 GLIBC_2.34 getutxent F
 GLIBC_2.34 getutxid F
 GLIBC_2.34 getutxline F
+GLIBC_2.34 lastlog_read F
+GLIBC_2.34 lastlog_write F
 GLIBC_2.34 pututline F
 GLIBC_2.34 pututxline F
 GLIBC_2.34 updwtmp F

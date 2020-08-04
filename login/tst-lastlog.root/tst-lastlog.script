@@ -1,0 +1,6 @@
+mkdirp 0755 /var/run
+touch  0664 /var/run/lastlog
+touch  0664 /var/run/lastlog.v2
+
+# Must run localedef as root to write into default paths.
+su

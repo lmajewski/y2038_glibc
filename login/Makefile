@@ -32,7 +32,7 @@ routines := getlogin getlogin_r setlogin getlogin_r_chk \
 	    getutent getutent_r getutid getutline getutid_r getutline_r \
 	    utmp_file utmpname updwtmp getpt grantpt unlockpt ptsname \
 	    ptsname_r_chk login login_tty logout logwtmp openpty forkpty \
-	    utmp32 utmpx32 utmp-convert
+	    utmp32 utmpx32 utmp-convert lastlog_read lastlog_write
 
 CFLAGS-grantpt.c += -DLIBEXECDIR='"$(libexecdir)"'
 
@@ -65,6 +65,7 @@ tests-container := tst-utmp-default
 install-lib-ldscripts = libutil.so
 $(inst_libdir)/libutil.so:
 endif # $(have-GLIBC_2.33)
+tests-container += tst-lastlog
 
 include ../Rules
 

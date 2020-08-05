@@ -104,6 +104,7 @@ int verbose = 0;
 	 cwd PATH
 	 exec FILE
 	 mkdirp MODE DIR
+	 touch MODE FILE
 
        variables:
 	 $B/ build dir, equivalent to $(common-objpfx)
@@ -129,6 +130,7 @@ int verbose = 0;
 	 - 'cwd': set test working directory
 	 - 'exec': change test binary location (may end in /)
 	 - 'mkdirp': A minimal "mkdir -p FILE" command.
+	 - 'touch': A minimal 'touch' command to create empty files.
 
    * mytest.root/postclean.req causes fresh rsync (with delete) after
      test if present
@@ -1018,6 +1020,15 @@ main (int argc, char **argv)
 		m = strtol (the_words[1], NULL, 0);
 		TEST_COMPARE (errno, 0);
 		xmkdirp (the_words[2], m);
+	      }
+	    else if (nt == 3 && strcmp (the_words[0], "touch") == 0)
+	      {
+		long int m;
+		errno = 0;
+		m = strtol (the_words[1], NULL, 0);
+		TEST_COMPARE (errno, 0);
+
+		xclose (xopen (the_words[2], O_WRONLY | O_TRUNC | O_CREAT, m));
 	      }
 	    else if (nt > 0 && the_words[0][0] != '#')
 	      {

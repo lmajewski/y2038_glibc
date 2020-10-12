@@ -210,20 +210,45 @@ extern int stat (const char *__restrict __file,
 extern int fstat (int __fd, struct stat *__buf) __THROW __nonnull ((2));
 #else
 # ifdef __REDIRECT_NTH
+#  ifdef __USE_TIME_BITS64
+extern int __REDIRECT_NTH (stat, (const char *__restrict __file,
+                                    struct stat *__restrict __buf),
+                           __stat64_time64) __nonnull ((1, 2));
+extern int __REDIRECT_NTH (fstat, (int __fd, struct stat *__buf),
+                           __fstat64_time64) __nonnull ((2));
+#  else
 extern int __REDIRECT_NTH (stat, (const char *__restrict __file,
 				  struct stat *__restrict __buf), stat64)
      __nonnull ((1, 2));
 extern int __REDIRECT_NTH (fstat, (int __fd, struct stat *__buf), fstat64)
      __nonnull ((2));
+#  endif
 # else
-#  define stat stat64
-#  define fstat fstat64
+#  ifdef __USE_TIME_BITS64
+#   define stat __stat64_time64
+#   define fstat __fstat64_time64
+#  else
+#   define stat stat64
+#   define fstat fstat64
+#  endif
 # endif
 #endif
 #ifdef __USE_LARGEFILE64
 extern int stat64 (const char *__restrict __file,
 		   struct stat64 *__restrict __buf) __THROW __nonnull ((1, 2));
 extern int fstat64 (int __fd, struct stat64 *__buf) __THROW __nonnull ((2));
+# ifdef __USE_TIME_BITS64
+#  if defined(__REDIRECT_NTH)
+extern int __REDIRECT_NTH (stat64, (const char *__restrict __file,
+                                    struct stat64 *__restrict __buf),
+                           __stat64_time64) __nonnull ((1, 2));
+extern int __REDIRECT_NTH (fstat64, (int __fd, struct stat64 *__buf),
+                           __fstat64_time64) __nonnull ((2));
+#  else
+#   define stat64 __stat64_time64
+#   define fstat64 __fstat64_time64
+#  endif
+# endif
 #endif
 
 #ifdef __USE_ATFILE
@@ -236,19 +261,39 @@ extern int fstatat (int __fd, const char *__restrict __file,
      __THROW __nonnull ((2, 3));
 # else
 #  ifdef __REDIRECT_NTH
+#   ifdef __USE_TIME_BITS64
+extern int __REDIRECT_NTH (fstatat, (int __fd, const char *__restrict __file,
+                                     struct stat *__restrict __buf, int __flag),
+                           __fstatat64_time64) __nonnull ((2, 3));
+#   else
 extern int __REDIRECT_NTH (fstatat, (int __fd, const char *__restrict __file,
 				     struct stat *__restrict __buf,
 				     int __flag),
 			   fstatat64) __nonnull ((2, 3));
+#   endif /* __USE_TIME_BITS64 */
 #  else
-#   define fstatat fstatat64
+#   ifdef __USE_TIME_BITS64
+#    define fstatat __fstatat64_time64
+#   else
+#    define fstatat fstatat64
+#   endif
 #  endif
-# endif
+# endif /* __USE_FILE_OFFSET64 */
 
 # ifdef __USE_LARGEFILE64
 extern int fstatat64 (int __fd, const char *__restrict __file,
 		      struct stat64 *__restrict __buf, int __flag)
      __THROW __nonnull ((2, 3));
+#  ifdef __USE_TIME_BITS64
+#   if defined(__REDIRECT_NTH)
+extern int __REDIRECT_NTH (fstatat64,
+                           (int __fd, const char *__restrict __file,
+                            struct stat64 *__restrict __buf, int __flag),
+                           __fstatat64_time64) __nonnull ((2, 3));
+#   else
+#    define fstatat64 __fstatat64_time64
+#   endif
+#  endif /* __USE_TIME_BITS64 */
 # endif
 #endif
 
@@ -260,19 +305,38 @@ extern int lstat (const char *__restrict __file,
 		  struct stat *__restrict __buf) __THROW __nonnull ((1, 2));
 # else
 #  ifdef __REDIRECT_NTH
+#   ifdef __USE_TIME_BITS64
+extern int __REDIRECT_NTH (lstat, (const char *__restrict __file,
+                                   struct stat *__restrict __buf),
+                           __lstat64_time64) __nonnull ((1, 2));
+#   else
 extern int __REDIRECT_NTH (lstat,
 			   (const char *__restrict __file,
 			    struct stat *__restrict __buf), lstat64)
      __nonnull ((1, 2));
+#   endif /* __USE_TIME_BITS64 */
 #  else
-#   define lstat lstat64
-#  endif
-# endif
+#   ifdef __USE_TIME_BITS64
+#    define lstat __lstat64_time64
+#   else
+#    define lstat lstat64
+#   endif
+#  endif /* __REDIRECT_NTH */
+# endif /* __USE_FILE_OFFSET64 */
 # ifdef __USE_LARGEFILE64
 extern int lstat64 (const char *__restrict __file,
 		    struct stat64 *__restrict __buf)
      __THROW __nonnull ((1, 2));
-# endif
+#  ifdef __USE_TIME_BITS64
+#   if defined(__REDIRECT_NTH)
+extern int __REDIRECT_NTH (lstat64, (const char *__restrict __file,
+                                     struct stat64 *__restrict __buf),
+                           __lstat64_time64) __nonnull ((1, 2));
+#   else
+#    define lstat64 __lstat64_time64
+#   endif
+#  endif /* __USE_TIME_BITS64 */
+# endif /* __USE_LARGEFILE64 */
 #endif
 
 /* Set file access permissions for FILE to MODE.

@@ -148,5 +148,9 @@ libc {
     __fstat64;
     __ppoll64;
     __utime64;
+    __stat64_time64;
+    __fstat64_time64;
+    __lstat64_time64;
+    __fstatat64_time64;
   }
 }

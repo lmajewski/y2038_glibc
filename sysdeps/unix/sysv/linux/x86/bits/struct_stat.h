@@ -23,6 +23,13 @@
 #ifndef _BITS_STRUCT_STAT_H
 #define _BITS_STRUCT_STAT_H	1
 
+#ifdef __USE_TIME_BITS64
+# include <bits/struct_stat_time64_helper.h>
+struct stat
+  {
+    __STAT64_T64_CONTENT
+  };
+#else
 struct stat
   {
     __dev_t st_dev;		/* Device.  */
@@ -93,9 +100,17 @@ struct stat
 # endif
 #endif
   };
+#endif /* __USE_TIME_BITS64 */
 
 #ifdef __USE_LARGEFILE64
 /* Note stat64 has the same shape as stat for x86-64.  */
+# ifdef __USE_TIME_BITS64
+# include <bits/struct_stat_time64_helper.h>
+struct stat64
+  {
+    __STAT64_T64_CONTENT
+  };
+# else
 struct stat64
   {
     __dev_t st_dev;		/* Device.  */
@@ -146,6 +161,7 @@ struct stat64
     __ino64_t st_ino;			/* File serial number.		*/
 # endif
   };
+# endif /* __USE_TIME_BITS64  */
 #endif
 
 /* Tell code we have these members.  */

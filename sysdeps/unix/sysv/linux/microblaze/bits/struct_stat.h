@@ -63,6 +63,13 @@ struct stat
         unsigned int            __glibc_reserved5;
 };
 #else /* __USE_FILE_OFFSET64 */
+# ifdef __USE_TIME_BITS64
+#  include <bits/struct_stat_time64_helper.h>
+struct stat
+  {
+    __STAT64_T64_CONTENT
+  };
+# else
 /* MS: If __USE_FILE_OFFSET64 is setup then struct stat should match stat64
  * structure. Glibc has no type __dev64_t that's why I had to use standard
  * type for st_dev and st_rdev. Several architectures uses pads after st_dev
@@ -106,9 +113,17 @@ struct stat
         unsigned int            __glibc_reserved4;
         unsigned int            __glibc_reserved5;
 };
+# endif /* __USE_TIME_BITS64 */
 #endif /* __USE_FILE_OFFSET64 */
 
 #ifdef __USE_LARGEFILE64
+# ifdef __USE_TIME_BITS64
+# include <bits/struct_stat_time64_helper.h>
+struct stat64
+  {
+    __STAT64_T64_CONTENT
+  };
+# else
 struct stat64
 {
         unsigned long long      st_dev;     /* Device.  */
@@ -147,6 +162,7 @@ struct stat64
         unsigned int            __glibc_reserved4;
         unsigned int            __glibc_reserved5;
 };
+# endif /* __USE_TIME_BITS64 */
 #endif
 
 /* Tell code we have these members.  */

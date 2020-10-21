@@ -4,6 +4,7 @@ librt {
     __timer_settime64;
     __mq_timedsend_time64;
     __mq_timedreceive_time64;
+    __aio_suspend_time64;
   }
   GLIBC_2.1 {
     # AIO functions.

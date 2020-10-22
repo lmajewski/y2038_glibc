@@ -20,26 +20,34 @@
 # error "Never use <bits/msq.h> directly; include <sys/msg.h> instead."
 #endif
 
+#include <bits/types/time_t.h>
+
 /* Structure of record for one message inside the kernel.
    The type `struct msg' is opaque.  */
 struct msqid_ds
 {
   struct ipc_perm msg_perm;	/* structure describing operation permission */
 #if __TIMESIZE == 32
-# ifdef __MIPSEL__
-  __time_t msg_stime;		/* time of last msgsnd command */
-  unsigned long int __msg_stime_high;
-  __time_t msg_rtime;		/* time of last msgsnd command */
-  unsigned long int __msg_rtime_high;
-  __time_t msg_ctime;		/* time of last change */
-  unsigned long int __msg_ctime_high;
+# if __USE_TIME_BITS64
+  __time64_t msg_stime;	/* time of last msgsnd command */
+  __time64_t msg_rtime;	/* time of last msgsnd command */
+  __time64_t msg_ctime;	/* time of last change */
 # else
+#  ifdef __MIPSEL__
+  __time_t msg_stime;		/* time of last msgsnd command */
+  unsigned long int __msg_stime_high;
+  __time_t msg_rtime;		/* time of last msgsnd command */
+  unsigned long int __msg_rtime_high;
+  __time_t msg_ctime;		/* time of last change */
+  unsigned long int __msg_ctime_high;
+#  else
   unsigned long int __msg_stime_high;
   __time_t msg_stime;		/* time of last msgsnd command */
   unsigned long int __msg_rtime_high;
   __time_t msg_rtime;		/* time of last msgsnd command */
   unsigned long int __msg_ctime_high;
   __time_t msg_ctime;		/* time of last change */
+#  endif
 # endif
 #else
   __time_t msg_stime;		/* time of last msgsnd command */

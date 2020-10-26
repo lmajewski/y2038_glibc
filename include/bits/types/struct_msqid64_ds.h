@@ -1,4 +1,4 @@
-/* Generic implementation of the SysV message struct msqid64_ds.
+/* Internal for glibc implementation of the SysV message struct msqid64_ds.
    Copyright (C) 2020 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
@@ -16,10 +16,11 @@
    License along with the GNU C Library; if not, see
    <https://www.gnu.org/licenses/>.  */
 
-#ifndef _SYS_MSG_H
-# error "Never use <bits/msq.h> directly; include <sys/msg.h> instead."
-#endif
+#include <time.h>
 
+#if __TIMESIZE == 64
+# define __msqid64_ds msqid_ds
+#else
 struct __msqid64_ds
 {
   struct ipc_perm msg_perm;	/* structure describing operation permission */
@@ -32,3 +33,4 @@ struct __msqid64_ds
   __pid_t msg_lspid;		/* pid of last msgsnd() */
   __pid_t msg_lrpid;		/* pid of last msgrcv() */
 };
+#endif

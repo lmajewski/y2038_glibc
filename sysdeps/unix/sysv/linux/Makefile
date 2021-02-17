@@ -121,6 +121,11 @@ tests += tst-ofdlocks-compat
 endif
 
 tests-internal += tst-sigcontext-get_pc
+tests-time64 += \
+  tst-ppoll-time64 \
+  tst-utime-time64 \
+  tst-utimes-time64 \
+  tst-timerfd-time64
 
 CFLAGS-tst-sigcontext-get_pc.c = -fasynchronous-unwind-tables
 

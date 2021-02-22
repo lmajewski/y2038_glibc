@@ -1290,7 +1290,7 @@ xcheck: xtests
 # that almost all internal declarations from config.h, libc-symbols.h, and
 # include/*.h are not available to 'testsuite' code, but are to 'nonlib' code.
 all-testsuite := $(strip $(tests) $(xtests) $(test-srcs) $(test-extras) \
-		 $(tests-container))
+		 $(tests-container) $(tests-container-internal))
 ifneq (,$(all-testsuite))
 cpp-srcs-left = $(all-testsuite)
 lib := testsuite
@@ -1298,6 +1298,7 @@ include $(patsubst %,$(..)libof-iterator.mk,$(cpp-srcs-left))
 endif
 
 all-nonlib := $(strip $(tests-internal) $(test-internal-extras) \
+		      $(tests-container-internal) \
 		      $(others) $(others-extras))
 ifneq (,$(all-nonlib))
 cpp-srcs-left = $(all-nonlib)

@@ -588,7 +588,7 @@ else
 LINKS_DSO_PROGRAM = links-dso-program
 endif
 
-$(tests-container) $(addsuffix /tests,$(subdirs)) : \
+$(tests-container) $(tests-container-internal) $(addsuffix /tests,$(subdirs)) : \
 		$(objpfx)testroot.pristine/install.stamp
 $(objpfx)testroot.pristine/install.stamp :
 	test -d $(objpfx)testroot.pristine || \

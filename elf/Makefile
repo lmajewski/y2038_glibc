@@ -80,6 +80,8 @@ ifeq (yes,$(have-loop-to-function))
 CFLAGS-rtld.c += -fno-tree-loop-distribute-patterns
 endif
 
+CFLAGS-pldd.c += -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64
+
 # Compile rtld itself without stack protection.
 # Also compile all routines in the static library that are elided from
 # the shared libc because they are in libc.a in the same way.
@@ -674,14 +676,23 @@ $(objpfx)ldd: ldd.bash.in $(common-objpfx)soversions.mk \
 	mv -f $@.new $@
 
 $(objpfx)sprof: $(libdl)
+CFLAGS-sprof.c += -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64
 
 $(objpfx)sln: $(sln-modules:%=$(objpfx)%.o)
+CFLAGS-sln.c += -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64
 
 $(objpfx)ldconfig: $(ldconfig-modules:%=$(objpfx)%.o)
+include $(o-iterator)
+define o-iterator-doit
+$(foreach f,$(ldconfig-modules),$(objpfx)$(f)$(o)): CFLAGS += -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64
+endef
+object-suffixes-left := $(all-object-suffixes)
+include $(o-iterator)
 
 SYSCONF-FLAGS := -D'SYSCONFDIR="$(sysconfdir)"'
 CFLAGS-ldconfig.c += $(SYSCONF-FLAGS) -D'LIBDIR="$(libdir)"' \
-		    -D'SLIBDIR="$(slibdir)"'
+		    -D'SLIBDIR="$(slibdir)"' \
+		    -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64
 libof-ldconfig = ldconfig
 CFLAGS-dl-cache.c += $(SYSCONF-FLAGS)
 CFLAGS-cache.c += $(SYSCONF-FLAGS)

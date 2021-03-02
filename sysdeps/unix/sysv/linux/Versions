@@ -187,6 +187,8 @@ libc {
     __select64;
     __utimes64;
     # posix
+    __glob64_time64;
+    __globfree64_time64;
     __nanosleep64;
     __pselec64;
     __wait3_time64;

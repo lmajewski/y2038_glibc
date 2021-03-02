@@ -61,6 +61,7 @@ tz-cflags = -DTZDIR='"$(zonedir)"' \
 	    -DTZDEFRULES='"$(posixrules-file)"' \
 	    -DTM_GMTOFF=tm_gmtoff -DTM_ZONE=tm_zone \
 	    -DHAVE_GETTEXT -DUSE_LTZ=0 -D_ISOMAC -DTZ_DOMAIN='"libc"' \
+	    -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64 \
 	    -include $(common-objpfx)config.h -Wno-maybe-uninitialized
 
 # The -Wno-unused-variable flag is used to prevent GCC 6

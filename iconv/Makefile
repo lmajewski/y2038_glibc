@@ -94,6 +94,14 @@ $(inst_bindir)/iconv: $(objpfx)iconv_prog $(+force)
 
 $(objpfx)iconv_prog: $(iconv_prog-modules:%=$(objpfx)%.o)
 $(objpfx)iconvconfig: $(iconvconfig-modules:%=$(objpfx)%.o)
+include $(o-iterator)
+define o-iterator-doit
+$(foreach f,$(others:%s=$(objpfx)%.o) $(iconv_prog-modules) \
+	    $(iconvconfig-modules), \
+	    $(objpfx)$(f)$(o)): CFLAGS += -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64
+endef
+object-suffixes-left := $(all-object-suffixes)
+include $(o-iterator)
 
 $(objpfx)test-iconvconfig.out: $(objpfx)iconvconfig
 	(set -e; \

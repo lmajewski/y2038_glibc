@@ -81,6 +81,15 @@ $(objpfx)localedef: $(localedef-aux:%=$(objpfx)%.o)
 $(objpfx)locale: $(locale-modules:%=$(objpfx)%.o)
 $(objpfx)localedef $(objpfx)locale: $(lib-modules:%=$(objpfx)%.o)
 
+include $(o-iterator)
+define o-iterator-doit
+$(foreach f,$(localedef-modules) $(localedef-aux) $(locale-modules) \
+	    $(lib-modules),$(objpfx)$(f)$(o)): CFLAGS += -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64
+endef
+object-suffixes-left := $(all-object-suffixes)
+include $(o-iterator)
+
+
 $(objpfx)C-translit.h: C-translit.h.in gen-translit.py
 	$(make-target-directory)
 	$(PYTHON) gen-translit.py < $< > $@.tmp

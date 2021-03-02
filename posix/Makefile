@@ -256,7 +256,8 @@ CFLAGS-spawni.c += -fexceptions
 CFLAGS-spawni.os = -fomit-frame-pointer
 CFLAGS-glob.c += $(uses-callbacks) -fexceptions
 CFLAGS-glob64.c += $(uses-callbacks) -fexceptions
-CFLAGS-getconf.c += -DGETCONF_DIR='"$(libexecdir)/getconf"'
+CFLAGS-getconf.c += -DGETCONF_DIR='"$(libexecdir)/getconf"' \
+		    -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64
 CFLAGS-execve.os = -fomit-frame-pointer
 CFLAGS-fexecve.os = -fomit-frame-pointer
 CFLAGS-execv.os = -fomit-frame-pointer

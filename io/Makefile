@@ -88,7 +88,7 @@ tests-time64    := tst-fts-time64 \
 		   tst-utimes-time64 \
 
 # Likewise for statx, but we do not need static linking here.
-tests-internal += tst-statx
+tests-internal += tst-statx tst-file_change_detection
 tests-static += tst-statx
 
 ifeq ($(run-built-tests),yes)

@@ -125,7 +125,12 @@ tests-time64 += \
   tst-ppoll-time64 \
   tst-utime-time64 \
   tst-utimes-time64 \
-  tst-timerfd-time64
+  tst-timerfd-time64 \
+  tst-adjtimex-time64 \
+  tst-ntp_adjtime-time64 \
+  tst-clock_adjtime-time64 \
+  tst-ntp_gettime-time64 \
+  tst-ntp_gettimex-time64
 
 CFLAGS-tst-sigcontext-get_pc.c = -fasynchronous-unwind-tables
 

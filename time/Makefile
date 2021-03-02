@@ -65,6 +65,8 @@ tests-time64 := \
   tst-mktime4-time64 \
   tst-timegm-time64 \
   tst-timespec_get-time64 \
+  tst-settimeofday-time64 \
+  tst-clock_settime-time64 \
   tst-y2039-time64
 
 include ../Rules

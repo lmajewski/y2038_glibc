@@ -283,8 +283,8 @@ hidden_proto (__nanosleep64)
 #endif
 
 
-extern int __getdate_r (const char *__string, struct tm *__resbufp)
-  attribute_hidden;
+extern int __getdate_r (const char *__string, struct tm *__resbufp);
+libc_hidden_proto (__getdate_r);
 
 
 /* Determine CLK_TCK value.  */
@@ -513,6 +513,13 @@ time_now (void)
 #define USEC_PER_SEC    1000000L     /* Microseconds per second.  */
 #define NSEC_PER_USEC   1000L        /* Nanoseconds per microsecond.  */
 
+static inline __time64_t
+time64_now (void)
+{
+  struct __timespec64 ts;
+  __clock_gettime64 (TIME_CLOCK_GETTIME_CLOCKID, &ts);
+  return ts.tv_sec;
+}
 #endif
 
 #endif

@@ -45,7 +45,8 @@ have-sunrpc		:= 1
 else
 have-sunrpc		:= 0
 endif
-CPPFLAGS-getent.c	= -DHAVE_SUNRPC=$(have-sunrpc)
+CPPFLAGS-getent.c	= -DHAVE_SUNRPC=$(have-sunrpc) \
+			  -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64
 
 others                  := getent makedb
 install-bin             := getent makedb
@@ -149,6 +150,14 @@ $(libnss_db-dbs:%=$(objpfx)%.c): $(objpfx)db-%.c: nss_files/files-%.c
 
 
 $(objpfx)makedb: $(makedb-modules:%=$(objpfx)%.o)
+include $(o-iterator)
+define o-iterator-doit
+$(foreach f,$(makedb-modules),$(objpfx)$(f)$(o)): CFLAGS += -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64
+endef
+object-suffixes-left := $(all-object-suffixes)
+include $(o-iterator)
+
+
 
 $(inst_vardbdir)/Makefile: db-Makefile $(+force)
 	$(do-install)

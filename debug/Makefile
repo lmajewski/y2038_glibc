@@ -213,6 +213,7 @@ $(objpfx)catchsegv: catchsegv.sh $(common-objpfx)soversions.mk \
 	mv -f $@.new $@
 
 $(objpfx)pcprofiledump: $(objpfx)pcprofiledump.o
+CFLAGS-pcprofiledump.c += -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64
 
 $(objpfx)xtrace: xtrace.sh
 	rm -f $@.new

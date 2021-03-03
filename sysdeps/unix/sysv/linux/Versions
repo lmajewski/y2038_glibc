@@ -185,6 +185,8 @@ libc {
     __fts64_read_time64;
     __fts64_set_time64;
     __fts64_children_time64;
+    __ftw64_time64;
+    __nftw64_time64;
     # misc
     __futimes64;
     __futimesat64;

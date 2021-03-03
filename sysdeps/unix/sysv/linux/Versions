@@ -180,6 +180,11 @@ libc {
     __lstat64_time64;
     __fstat64_time64;
     __fstatat64_time64;
+    __fts64_open_time64;
+    __fts64_close_time64;
+    __fts64_read_time64;
+    __fts64_set_time64;
+    __fts64_children_time64;
     # misc
     __futimes64;
     __futimesat64;

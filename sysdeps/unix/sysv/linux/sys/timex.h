@@ -60,7 +60,7 @@ extern int ntp_gettimex (struct ntptimeval *__ntv) __THROW;
 
 # ifdef __REDIRECT_NTH
 extern int __REDIRECT_NTH (ntp_gettime, (struct ntptimeval *__ntv),
-                           __ntp_gettime64);
+                           ntp_gettimex);
 # else
 #  define ntp_gettime ntp_gettimex
 # endif

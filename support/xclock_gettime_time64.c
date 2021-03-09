@@ -1,4 +1,4 @@
-/* clock_settime with error checking.  64 bit time_t support.
+/* clock_gettime helper with error checking - 64 bit time_t support.
    Copyright (C) 2021 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 

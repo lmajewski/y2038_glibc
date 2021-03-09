@@ -36,6 +36,8 @@ void xclock_settime (clockid_t clock, const struct timespec *ts);
 #else
 void __REDIRECT (xclock_gettime, (clockid_t clock, struct timespec *ts),
 		 xclock_gettime_time64);
+void __REDIRECT (xclock_settime, (clockid_t clock, const struct timespec *ts),
+		 xclock_settime_time64);
 #endif
 
 /* This helper can often simplify tests by avoiding an explicit

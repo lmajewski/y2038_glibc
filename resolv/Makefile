@@ -60,6 +60,7 @@ tests += \
   tst-resolv-res_init-multi \
   tst-resolv-search \
   tst-resolv-trailing \
+  tst-gai_suspend \
 
 # This test calls __res_context_send directly, which is not exported
 # from libresolv.
@@ -211,3 +212,4 @@ $(objpfx)tst-ns_name_compress: $(objpfx)libresolv.so
 $(objpfx)tst-ns_name_pton: $(objpfx)libresolv.so
 $(objpfx)tst-res_hnok: $(objpfx)libresolv.so
 $(objpfx)tst-p_secstodate: $(objpfx)libresolv.so
+$(objpfx)tst-gai_suspend: $(objpfx)libanl.so

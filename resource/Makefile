@@ -25,6 +25,6 @@ headers	  := sys/resource.h bits/resource.h sys/vlimit.h	\
 routines := getrlimit setrlimit getrlimit64 setrlimit64 getrusage ulimit      \
 	    vlimit vtimes getpriority setpriority nice
 
-tests = tst-getrlimit bug-ulimit1
+tests = tst-getrlimit bug-ulimit1 tst-getrusage
 
 include ../Rules

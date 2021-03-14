@@ -90,7 +90,7 @@ tests := tst-dirname tst-tsearch tst-fdset tst-mntent tst-hsearch \
 	 tst-ldbl-warn tst-ldbl-error tst-dbl-efgcvt tst-ldbl-efgcvt \
 	 tst-mntent-autofs tst-syscalls tst-mntent-escape tst-select
 
-tests-time64 := tst-pselect-time64
+tests-time64 := tst-pselect-time64 tst-select-time64
 
 # Tests which need libdl.
 ifeq (yes,$(build-shared))

@@ -131,7 +131,8 @@ tests-time64 += \
   tst-clock_adjtime-time64 \
   tst-ntp_gettime-time64 \
   tst-ntp_gettimex-time64 \
-  tst-adjtime-time64
+  tst-adjtime-time64 \
+  tst-sigtimedwait-time64 \
 
 CFLAGS-tst-sigcontext-get_pc.c = -fasynchronous-unwind-tables
 

@@ -26,5 +26,6 @@ routines := getrlimit setrlimit getrlimit64 setrlimit64 getrusage ulimit      \
 	    vlimit vtimes getpriority setpriority nice
 
 tests = tst-getrlimit bug-ulimit1 tst-getrusage
+tests-time64 = tst-getrusage-time64
 
 include ../Rules

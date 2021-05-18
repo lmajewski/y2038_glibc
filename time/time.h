@@ -382,9 +382,19 @@ extern int __REDIRECT_NTH (timespec_get, (struct timespec *__ts, int __base),
 
 
 #if __GLIBC_USE (ISOC2X)
+# ifndef __USE_TIME_BITS64
 /* Set TS to resolution of time base BASE.  */
 extern int timespec_getres (struct timespec *__ts, int __base)
      __THROW;
+# else
+#  ifdef __REDIRECT_NTH
+extern int __REDIRECT_NTH (timespec_getres, (struct timespec *__ts,
+                                             int __base),
+                           __timespec_getres64);
+#  else
+#   define timespec_getres __timespec_getres64
+#  endif
+# endif
 #endif
 
 

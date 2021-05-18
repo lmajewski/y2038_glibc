@@ -2602,6 +2602,7 @@ GLIBC_2.34 __timegm64 F
 GLIBC_2.34 __timerfd_gettime64 F
 GLIBC_2.34 __timerfd_settime64 F
 GLIBC_2.34 __timespec_get64 F
+GLIBC_2.34 __timespec_getres64 F
 GLIBC_2.34 __utime64 F
 GLIBC_2.34 __utimensat64 F
 GLIBC_2.34 __utimes64 F

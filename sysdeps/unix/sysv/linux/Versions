@@ -236,6 +236,7 @@ libc {
     __time64;
     __timegm64;
     __timespec_get64;
+    __timespec_getres64;
     __utimensat64;
     __utimes64;
     __utimes64;
